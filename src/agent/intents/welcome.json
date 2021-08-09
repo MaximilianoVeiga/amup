@@ -1,0 +1,14 @@
+{
+    "name": "Welcome Intent",
+    "slug": "welcome",
+    "training" : [
+        "oi",
+        "olá",
+        "eae",
+        "fala"
+    ],
+    "response": [
+        "Oi, como você está?",
+        "Olá, como você esta?"
+    ]
+}

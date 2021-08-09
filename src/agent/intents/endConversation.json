@@ -1,0 +1,12 @@
+{
+    "name": "End Conversation",
+    "slug": "end",
+    "training" : [
+        "até mais",
+        "vlw",
+        "flw"
+    ],
+    "response": [
+        "Obrigado por entrar em contato!"
+    ]
+}
