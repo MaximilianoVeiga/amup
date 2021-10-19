@@ -1,20 +1,21 @@
 const path = require("path");
 const fs = require("fs");
 const directoryPath = path.join(__dirname, "agent/intents");
-const { NlpManager } = require('node-nlp');
-const { v4: uuidv4 } = require('uuid');
+const { NlpManager } = require("node-nlp");
+const { v4: uuidv4 } = require("uuid");
 
 async function processAgent() {
-  return fs.readdirSync(directoryPath)
-           .filter(name => path.extname(name) === '.json')
-           .map(name => require(path.join(directoryPath, name)));
+  return fs
+    .readdirSync(directoryPath)
+    .filter((name) => path.extname(name) === ".json")
+    .map((name) => require(path.join(directoryPath, name)));
 }
 
 async function detectIntent(query) {
-  const manager = new NlpManager({ languages: ['pt'], forceNER: true });
+  const manager = new NlpManager({ languages: ["pt"], forceNER: true });
   await manager.load();
 
-  const response = await manager.process('pt', query);
+  const response = await manager.process("pt", query);
 
   const getTag = require(path.join(directoryPath, response.intent));
 
