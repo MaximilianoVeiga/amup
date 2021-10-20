@@ -1,20 +1,12 @@
 {
-    "name": "Welcome Intent",
-    "slug": "welcome",
-    "fallbackIntent": false,
+    "name": "Fallback Intent",
+    "slug": "end",
+    "fallbackIntent": true,
     "endInteraction": false,
     "priority": 500000,
     "context": "",
-    "tests" : [
-        "Olá, tudo bem?",
-        "Oi, tudo bem?"
-    ],
-    "utterances" : [
-        "Olá",
-        "Oi",
-        "Eai",
-        "Diga"
-    ],
+    "tests" : [],
+    "utterances" : [],
     "responses": [
         {
             "parameters": [],
@@ -23,8 +15,7 @@
                 "type": "message",
                 "condition": "",
                 "text": [
-                    "Oi, como você está?",
-                    "Olá, como você esta?"
+                    "Desculpe, não entendi o que você disse."
                 ]
               }
             ]

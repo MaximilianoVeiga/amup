@@ -1,12 +1,32 @@
 {
-    "name": "End Conversation",
+    "name": "End Conversation Intent",
     "slug": "end",
-    "training" : [
-        "até mais",
-        "vlw",
-        "flw"
+    "fallbackIntent": false,
+    "endInteraction": true,
+    "priority": 500000,
+    "context": "",
+    "tests" : [
+        "Obrigado, até outra hora.",
+        "Até mais, obrigado."
     ],
-    "response": [
-        "Obrigado por entrar em contato!"
+    "utterances" : [
+        "Até mais",
+        "Valeu",
+        "Obrigado, até mais"
+    ],
+    "responses": [
+        {
+            "parameters": [],
+            "messages": [
+              {
+                "type": "message",
+                "condition": "",
+                "text": [
+                  "Obrigado por entrar em contato!",
+                  "Muito obrigado por conversar conosco!"
+                ]
+              }
+            ]
+        }
     ]
 }
