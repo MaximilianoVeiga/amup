@@ -1,19 +1,13 @@
 const path = require("path");
 const fs = require("fs");
 const directoryPath = path.join(__dirname, "agent/intents");
-const { NlpManager } = require('node-nlp');
-
-async function processAgent() {
-  return fs.readdirSync(directoryPath)
-           .filter(name => path.extname(name) === '.json')
-           .map(name => require(path.join(directoryPath, name)));
-}
+const { NlpManager } = require("node-nlp");
 
 async function detectIntent(query) {
-  const manager = new NlpManager({ languages: ['pt'], forceNER: true });
+  const manager = new NlpManager({ languages: ["pt"], forceNER: true });
   await manager.load();
 
-  const response = await manager.process('pt', query);
+  const response = await manager.process("pt", query);
 
   return response;
 }
@@ -24,13 +18,30 @@ async function trainModel(intents) {
   intents.map((intent) => {
     const intentName = intent.name;
     const intentSlug = intent.slug;
+    const intentContext = intent.context;
 
-    intent.training.map((training) => {
+    if (intentContext) {
+      manager.assignDomain(intentName, intentSlug, intentContext);
+    }
+
+    intent.utterances.map((training) => {
       manager.addDocument("pt", training, intentSlug);
     });
 
-    intent.response.map((response) => {
-      manager.addAnswer("pt", intentSlug, response);
+    //TODO: Implement variation of messages
+    let count = 0;
+    intent.responses.map((response) => {
+      response.message.map((message) => {
+        if (text >= 1) {
+          for (const text of message.text) {
+            console.log(`${intentName} - ${text}`);
+            manager.addAnswer("pt", intentSlug, text, "messageVariation" + count);
+          }
+        } else {
+          manager.addAnswer("pt", intentSlug, text[0]);
+        }
+      });
+      count++;
     });
   });
 
@@ -42,4 +53,11 @@ async function saveModel(manager) {
   manager.save();
 }
 
-module.exports = { processAgent, trainModel, saveModel, detectIntent };
+async function readIntents() {
+  return fs
+    .readdirSync(directoryPath)
+    .filter((name) => path.extname(name) === ".json")
+    .map((name) => require(path.join(directoryPath, name)));
+}
+
+module.exports = { readIntents, trainModel, saveModel, detectIntent };

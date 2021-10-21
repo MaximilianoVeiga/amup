@@ -1,24 +1,22 @@
 {
-    "name": "Fallback Intent",
-    "slug": "end",
-    "fallbackIntent": true,
-    "endInteraction": false,
-    "priority": 500000,
-    "context": "",
-    "tests" : [],
-    "utterances" : [],
-    "responses": [
+  "name": "Fallback Intent",
+  "slug": "end",
+  "fallbackIntent": true,
+  "endInteraction": false,
+  "priority": 500000,
+  "context": "",
+  "tests": [],
+  "utterances": [],
+  "responses": [
+    {
+      "parameters": [],
+      "message": [
         {
-            "parameters": [],
-            "messages": [
-              {
-                "type": "message",
-                "condition": "",
-                "text": [
-                    "Desculpe, não entendi o que você disse."
-                ]
-              }
-            ]
+          "type": "message",
+          "condition": "",
+          "text": ["Desculpe, não entendi o que você disse."]
         }
-    ]
+      ]
+    }
+  ]
 }

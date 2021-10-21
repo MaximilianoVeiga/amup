@@ -1,33 +1,22 @@
 {
-    "name": "Welcome Intent",
-    "slug": "welcome",
-    "fallbackIntent": false,
-    "endInteraction": false,
-    "priority": 500000,
-    "context": "",
-    "tests" : [
-        "Olá, tudo bem?",
-        "Oi, tudo bem?"
-    ],
-    "utterances" : [
-        "Olá",
-        "Oi",
-        "Eai",
-        "Diga"
-    ],
-    "responses": [
+  "name": "Welcome Intent",
+  "slug": "welcome",
+  "fallbackIntent": false,
+  "endInteraction": false,
+  "priority": 500000,
+  "context": "",
+  "tests": ["Olá, tudo bem?", "Oi, tudo bem?"],
+  "utterances": ["Olá", "Oi", "Eai", "Diga"],
+  "responses": [
+    {
+      "parameters": [],
+      "message": [
         {
-            "parameters": [],
-            "messages": [
-              {
-                "type": "message",
-                "condition": "",
-                "text": [
-                    "Oi, como você está?",
-                    "Olá, como você esta?"
-                ]
-              }
-            ]
+          "type": "message",
+          "condition": "",
+          "text": ["Oi, como você está?", "Olá, como você esta?"]
         }
-    ]
+      ]
+    }
+  ]
 }
