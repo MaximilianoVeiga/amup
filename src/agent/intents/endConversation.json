@@ -1,19 +1,23 @@
 {
   "name": "End Conversation Intent",
   "slug": "end",
+  "action": "end",
   "fallbackIntent": false,
   "endInteraction": true,
   "priority": 500000,
   "context": "",
-  "tests": ["Obrigado, até outra hora.", "Até mais, obrigado."],
-  "utterances": ["Até mais", "Valeu", "Obrigado, até mais"],
+  "utterances": [
+    "Até mais",
+    "Valeu",
+    "Obrigado, até mais"
+  ],
   "responses": [
     {
       "parameters": [],
       "message": [
         {
           "type": "message",
-          "condition": "",
+          "plataform": "webchat",
           "text": [
             "Obrigado por entrar em contato!",
             "Muito obrigado por conversar conosco!"

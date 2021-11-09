@@ -23,7 +23,7 @@ npm install
 ### Contents
 
 * [Intent](#intent)
-* [Response](#tokenizing)
+* [Response](#response)
 
 ### Intent
 
@@ -31,26 +31,33 @@ npm install
 {
   "name": "Welcome Intent",
   "slug": "welcome",
+  "action": "welcome",
   "fallbackIntent": false,
   "endInteraction": false,
   "priority": 500000,
   "context": "",
-  "tests": ["Olá, tudo bem?", "Oi, tudo bem?"],
-  "utterances": ["Olá", "Oi", "Eai", "Diga"],
+  "utterances": [
+    "Olá",
+    "Oi",
+    "Eai",
+    "Diga"
+  ],
   "responses": [
     {
       "parameters": [],
       "message": [
         {
           "type": "message",
-          "condition": "",
-          "text": ["Oi, como você está?", "Olá, como você esta?"]
+          "plataform": "webchat",
+          "text": [
+            "Oi, como você está?",
+            "Olá, como você esta?"
+          ]
         }
       ]
     }
   ]
 }
-
 ```
 
 This document represents an intention. It has several tags that help the library process and create the intent responses.
@@ -60,51 +67,31 @@ This document represents an intention. It has several tags that help the library
 
 ```json
 {
-    "locale": "pt",
-    "utterance": "ola",
-    "languageGuessed": false,
-    "localeIso2": "pt",
-    "language": "Portuguese",
-    "explanation": [
-        {
-            "token": "",
-            "stem": "##exact",
-            "weight": 1
-        }
-    ],
-    "classifications": [
-        {
-            "intent": "welcome",
-            "score": 1
-        },
-        {
-            "intent": "end",
-            "score": 0
-        }
-    ],
-    "intent": "welcome",
-    "score": 1,
-    "domain": "default",
-    "sourceEntities": [],
-    "entities": [],
-    "answers": [
-        {
-            "answer": "Oi, como você está?"
-        },
-        {
-            "answer": "Olá, como você esta?"
-        }
-    ],
-    "answer": "Oi, como você está?",
-    "actions": [],
-    "sentiment": {
-        "score": 0,
-        "numWords": 1,
-        "numHits": 0,
-        "average": 0,
-        "type": "afinn",
-        "locale": "pt",
-        "vote": "neutral"
+  "id": "gfp5t6FUa6XEQYaPFAKe4a",
+  "fulfillmentText": "Oi, como você está?",
+  "utterance": "olá, tudo bem?",
+  "languageCode": "pt",
+  "confidence": 1,
+  "entities": [],
+  "webhook": {
+    "webhookUsed": false
+  },
+  "messages": [
+    {
+      "text": "Oi, como você está?"
     }
+  ],
+  "sentimentAnalysisResult": {
+    "queryTextSentiment": {
+      "score": 3,
+      "type": "afinn",
+      "vote": "positive"
+    }
+  },
+  "intent": {
+    "isFallback": false,
+    "displayName": "Welcome Intent",
+    "id": "fGCUztXn1WMDNkN6i4gqVA"
+  }
 }
 ```

@@ -1,11 +1,11 @@
 {
   "name": "Fallback Intent",
-  "slug": "end",
+  "slug": "None",
+  "action": "end",
   "fallbackIntent": true,
   "endInteraction": false,
   "priority": 500000,
   "context": "",
-  "tests": [],
   "utterances": [],
   "responses": [
     {
@@ -13,8 +13,22 @@
       "message": [
         {
           "type": "message",
-          "condition": "",
-          "text": ["Desculpe, não entendi o que você disse."]
+          "plataform": "webchat",
+          "text": [
+            "Desculpe, não entendi o que você disse."
+          ]
+        }
+      ]
+    },
+    {
+      "parameters": [],
+      "message": [
+        {
+          "type": "message",
+          "plataform": "webchat",
+          "text": [
+            "Vamos tentar novamente?"
+          ]
         }
       ]
     }

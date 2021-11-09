@@ -3,17 +3,28 @@ const app = express();
 const port = 3000 || process.env.PORT;
 const colors = require("colors");
 const utils = require("./utils");
+const redis = require('redis');
 
-app.get('/detectIntent', async function(req, res) {
-  if (req.query.text) {
-    const text = req.query.text;
-    const response = await utils.detectIntent(text);
+const client = redis.createClient(6379);
 
-    console.log(`${'[Aurora]'.yellow} Detected intent correctly`);
-    res.send(response);
-  } else {
-    res.send("No text provided");
-  }
+app.get('/detectIntent', async function (req, res) {
+  const intentText = req.query.text;
+
+  client.get(intentText, async (err, intent) => {
+    if (intent) {
+      const intentResponse = JSON.parse(intent);
+      console.log(`${'[Aurora]'.yellow} Detected intent correctly`);
+
+      res.send(intentResponse);
+    } else {
+      const response = await utils.detectIntent(intentText);
+
+      client.setex(intentText, 1440, JSON.stringify(response));
+      console.log(`${'[Aurora]'.yellow} Detected intent correctly`);
+
+      res.send(response);
+    }
+  });
 });
 
 app.get("/", (req, res) => {
@@ -22,7 +33,7 @@ app.get("/", (req, res) => {
 
 app.get("/train", async (req, res) => {
   console.log(`${'[Aurora]'.yellow} Bot is training`);
-  res.send({"status": "200"}).status(200);
+  res.send({ "status": "200" }).status(200);
   const intents = await utils.readIntents();
   await utils.trainModel(intents);
 

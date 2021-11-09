@@ -1,20 +1,28 @@
 {
   "name": "Welcome Intent",
   "slug": "welcome",
+  "action": "welcome",
   "fallbackIntent": false,
   "endInteraction": false,
   "priority": 500000,
   "context": "",
-  "tests": ["Olá, tudo bem?", "Oi, tudo bem?"],
-  "utterances": ["Olá", "Oi", "Eai", "Diga"],
+  "utterances": [
+    "Olá",
+    "Oi",
+    "Eai",
+    "Diga"
+  ],
   "responses": [
     {
       "parameters": [],
       "message": [
         {
           "type": "message",
-          "condition": "",
-          "text": ["Oi, como você está?", "Olá, como você esta?"]
+          "plataform": "webchat",
+          "text": [
+            "Oi, como você está?",
+            "Olá, como você esta?"
+          ]
         }
       ]
     }
