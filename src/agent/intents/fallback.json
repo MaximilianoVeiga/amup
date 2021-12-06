@@ -1,12 +1,13 @@
 {
+  "id": "ffzZ54x9GXGS938cLjYfFy",
   "name": "Fallback Intent",
   "slug": "None",
-  "action": "end",
   "fallbackIntent": true,
   "endInteraction": false,
   "priority": 500000,
-  "context": "",
   "utterances": [],
+  "inputContexts": [],
+  "outputContexts": [],
   "responses": [
     {
       "parameters": [],

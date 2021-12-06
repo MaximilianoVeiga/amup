@@ -1,17 +1,19 @@
 {
+  "id": "vfjJBLyupnaof8d5ycPvCP",
   "name": "Welcome Intent",
-  "slug": "welcome",
-  "action": "welcome",
+  "slug": "Welcome",
   "fallbackIntent": false,
   "endInteraction": false,
   "priority": 500000,
-  "context": "",
   "utterances": [
-    "Olá",
-    "Oi",
-    "Eai",
-    "Diga"
+    "olá",
+    "oi",
+    "eai",
+    "diga",
+    "ola"
   ],
+  "inputContexts": [],
+  "outputContexts": [],
   "responses": [
     {
       "parameters": [],

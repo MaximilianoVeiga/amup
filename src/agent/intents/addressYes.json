@@ -1,16 +1,20 @@
 {
-  "id": "mXLWu7tddLFDPxiNBgrX2J",
-  "name": "End Conversation Intent",
-  "slug": "End",
+  "id": "4ghn5qS3zFoEKWNHpFB3fY",
+  "name": "Address Yes Intent",
+  "slug": "AddressYes",
   "fallbackIntent": false,
-  "endInteraction": true,
+  "endInteraction": false,
   "priority": 500000,
   "utterances": [
-    "até mais",
-    "valeu",
-    "obrigado, tchau"
+    "sim",
+    "isso ai",
+    "isso mesmo"
   ],
-  "inputContexts": [],
+  "inputContexts": [
+    {
+      "name": "address-followup"
+    }
+  ],
   "outputContexts": [],
   "responses": [
     {
@@ -20,8 +24,7 @@
           "type": "message",
           "plataform": "webchat",
           "text": [
-            "Obrigado por entrar em contato!",
-            "Muito obrigado por conversar conosco!"
+            "Seu endereço foi modificado com sucesso."
           ]
         }
       ]
