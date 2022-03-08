@@ -4,12 +4,13 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "serve": "redis-server 2>&1 & nodemon src/index.js"
+    "dev": "lt --port 3000 2>&1 & redis-server 2>&1 & nodemon src/index.js"
   },
   "keywords": [],
   "author": "Maximiliano Veiga",
   "license": "CCSA40",
   "dependencies": {
+    "axios": "^0.23.0",
     "colors": "^1.4.0",
     "express": "^4.17.1",
     "node-nlp": "^4.22.1",

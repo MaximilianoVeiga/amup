@@ -1,0 +1,34 @@
+{
+  "id": "mEogkJzHot9s8dH6pv3PMo",
+  "name": "Address Intent",
+  "slug": "Address",
+  "fallbackIntent": false,
+  "endInteraction": false,
+  "priority": 500000,
+  "utterances": [
+    "quero mudar meu endereço",
+    "mudar meu endereço",
+    "trocar endereço"
+  ],
+  "inputContexts": [],
+  "outputContexts": [
+    {
+      "name": "address-followup",
+      "lifespanCount": 2
+    }
+  ],
+  "responses": [
+    {
+      "parameters": [],
+      "message": [
+        {
+          "type": "message",
+          "plataform": "webchat",
+          "text": [
+            "Entendi que você quer mudar seu endereço. Tem certeza que quer fazer isso?"
+          ]
+        }
+      ]
+    }
+  ]
+}
