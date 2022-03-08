@@ -107,6 +107,15 @@ async function addResponses(intent, intentSlug, manager) {
   return manager;
 }
 
+async function writeIntent(intent, fileName) {
+  const json = JSON.stringify(intent);
+  await fs.writeFileSync(fileName, json, "utf8", (err) => {
+    if (err) {
+      console.log(err);
+    }
+  });
+}
+
 async function saveModel(manager, fileName = "./data/model.nlp") {
   await manager.train();
   manager.save(fileName);
@@ -275,4 +284,4 @@ async function readIntents() {
     .map((name) => require(path.join(directoryPath, name)));
 }
 
-module.exports = { readIntents, trainModel, saveModel, detectIntent, decreaseContexts, generateRandomToken, groupContextsByName, updateContexts, getContextNameModel };
+module.exports = { readIntents, trainModel, saveModel, detectIntent, decreaseContexts, generateRandomToken, groupContextsByName, updateContexts, getContextNameModel, writeIntent };
