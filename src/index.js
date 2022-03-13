@@ -1,8 +1,12 @@
+const path = require('path');
+
+require('dotenv').config({path: path.join(__dirname, '..', '.env')})
+
 const express = require("express");
 const app = express();
 
-const url = "localhost" || process.env.URL;
-const port = 3000 || process.env.PORT;
+const url = process.env.URL || "localhost";
+const port = process.env.PORT || 3000;
 
 const colors = require("colors");
 
