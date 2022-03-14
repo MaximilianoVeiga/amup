@@ -76,9 +76,9 @@ npm install
 
 This document represents an intention. It has several tags that help the library process and create the intent responses.
 
-##Example
+### Example
 
-### Request
+#### Request
 
 ```bash
 curl --location --request GET 'localhost:3000/detectIntent?text=olá&sessionId=xbwpe1ns8XyDbQBZ35Jp3r'
