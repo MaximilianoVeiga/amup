@@ -23,5 +23,13 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.14"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaximilianoVeiga/aurora-nlpjs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MaximilianoVeiga/aurora-nlpjs/issues"
+  },
+  "homepage": "https://github.com/MaximilianoVeiga/aurora-nlpjs#readme"
 }

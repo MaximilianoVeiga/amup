@@ -197,7 +197,7 @@ function updateContexts(contexts) {
   return newContexts;
 }
 
-function makeResponse(nluResponse, sessionId) {
+async function makeResponse(nluResponse, sessionId) {
   const { intent, entities, context } = nluResponse;
   const { confidence, value } = intent;
   const { lifespan } = context;
@@ -236,6 +236,7 @@ async function makeResponse(response, sessionId = null) {
   const intent = {
     isFallback: response.intent === "None" ? true : false,
     displayName: intentData.name,
+    endInteraction: intentData.endInteraction,
     id: short.generate()
   }
 

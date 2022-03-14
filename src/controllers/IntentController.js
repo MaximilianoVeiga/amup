@@ -120,6 +120,10 @@ class IntentController {
       res.status(404).send({ "status": "404" });
     }
   }
+
+  async health(req, res) {
+    res.status(200).send({ "status": "200" });
+  }
 }
 
 module.exports = new IntentController();

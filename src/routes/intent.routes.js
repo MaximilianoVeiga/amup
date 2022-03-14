@@ -7,4 +7,7 @@ router.get('/detectIntent', IntentController.detect);
 router.post('/addIntent', IntentController.create);
 router.delete('/removeIntent', IntentController.destroy);
 
+router.get('/health', IntentController.health);
+
+
 module.exports = router;
