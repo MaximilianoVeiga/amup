@@ -2,6 +2,7 @@ const redis = require('redis');
 const client = redis.createClient(6379);
 const utils = require("../utils");
 const colors = require("colors");
+const Intent = require('../models/Intent');
 
 class IntentController {
   async detect(req, res, next) {
@@ -59,7 +60,6 @@ class IntentController {
         console.log(sessionParameters);
 
         client.setex(sessionId, 1440, JSON.stringify(sessionParameters));
-
         console.log(`${'[Aurora]'.yellow} Detected intent correctly`);
 
         res.send(response);
@@ -67,37 +67,59 @@ class IntentController {
     });
   }
 
-  async train(req, res, next) {
+  async train(req, res) {
     console.log(`${'[Aurora]'.yellow} Bot is training`);
-    res.send({ "status": "200" }).status(200);
+    res.status(200).send({ "status": "200" });
     const intents = await utils.readIntents();
     await utils.trainModel(intents);
 
     console.log(`${'[Aurora]'.yellow} Bot is trained sucessfully`);
   }
 
-  async create(req, res, next) {
-    const intent = req.body;
+  async create(req, res) {
+    const reqIntent = req.body;
     const intents = await utils.readIntents();
-    const intentSlug = intent.slug;
 
-    if (intents.find(i => i.name === intentSlug)) {
+    if (intents.find(i => i.name === reqIntent.slug)) {
       console.log(`${'[Aurora]'.yellow} Intent already exists`);
-      res.send({ "status": "200" }).status(200);
+      res.status(200).send({ "status": "200" });
     } else {
-      intents.push(intent);
-      await utils.writeIntent(intents, intentSlug);
-      console.log(`${'[Aurora]'.yellow} Intent created`);
-      res.send({ "status": "200" }).status(200);
+      const intent = new Intent(reqIntent);
+
+      if (intent.isValid()) {
+        intents.push(intent);
+        await utils.writeIntent(intent.toJSON(), reqIntent.slug);
+        console.log(`${'[Aurora]'.yellow} Intent created`);
+        res.status(201).send({ "status": "201", "message": "Intent created" });
+        utils.train();
+      }
     }
   }
 
   // async update(req, res, next) {
   // }
 
-  // async destroy(req, res, next) {
-  // }
+  async destroy(req, res, next) {
+    const reqIntent = req.query.intent;
+    const intents = await utils.readIntents();
 
+    if (!reqIntent) {
+      console.log(`${'[Aurora]'.yellow} Intent not found`);
+      res.status(404).send({ "status": "404" });
+    }
+
+    const intent = intents.find(i => i.name === reqIntent);
+
+    if (intent) {
+      utils.removeIntent(intent.slug);
+      console.log(`${'[Aurora]'.yellow} Intent deleted`);
+      res.status(200).send({ "status": "200" });
+      utils.train();
+    } else {
+      console.log(`${'[Aurora]'.yellow} Intent not found`);
+      res.status(404).send({ "status": "404" });
+    }
+  }
 }
 
 module.exports = new IntentController();

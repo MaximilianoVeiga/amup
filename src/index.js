@@ -5,6 +5,10 @@ require('dotenv').config({path: path.join(__dirname, '..', '.env')})
 const express = require("express");
 const app = express();
 
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
+
 const url = process.env.URL || "localhost";
 const port = process.env.PORT || 3000;
 

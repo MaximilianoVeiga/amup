@@ -107,13 +107,28 @@ async function addResponses(intent, intentSlug, manager) {
   return manager;
 }
 
+async function train () {
+  console.log(`${'[Aurora]'.yellow} Bot is training`);
+  const intents = await readIntents();
+  await trainModel(intents);
+}
+
 async function writeIntent(intent, fileName) {
   const json = JSON.stringify(intent);
-  await fs.writeFileSync(fileName, json, "utf8", (err) => {
+  const intentPath = path.join(__dirname, 'agent' ,'intents', fileName + ".json");
+  fs.writeFileSync(intentPath, json, "utf8", (err) => {
     if (err) {
       console.log(err);
     }
   });
+}
+
+async function removeIntent(fileName) {
+  const intentPath = path.join(__dirname, 'agent' ,'intents', fileName + ".json");
+
+  fs.unlink(intentPath, function (err) {
+    if (err) throw err;
+});
 }
 
 async function saveModel(manager, fileName = "./data/model.nlp") {
@@ -238,7 +253,6 @@ async function makeResponse(response, sessionId = null) {
 
   const messages = intentData.responses.map((response) => {
     const message = response.message[0];
-
     const messageText = message.text;
 
     let messageVariation = [];
@@ -284,4 +298,4 @@ async function readIntents() {
     .map((name) => require(path.join(directoryPath, name)));
 }
 
-module.exports = { readIntents, trainModel, saveModel, detectIntent, decreaseContexts, generateRandomToken, groupContextsByName, updateContexts, getContextNameModel, writeIntent };
+module.exports = { readIntents, trainModel, saveModel, detectIntent, decreaseContexts, generateRandomToken, groupContextsByName, updateContexts, getContextNameModel, writeIntent, removeIntent, train };
