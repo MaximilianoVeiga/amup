@@ -299,4 +299,23 @@ async function readIntents() {
     .map((name) => require(path.join(directoryPath, name)));
 }
 
-module.exports = { readIntents, trainModel, saveModel, detectIntent, decreaseContexts, generateRandomToken, groupContextsByName, updateContexts, getContextNameModel, writeIntent, removeIntent, train };
+function verifyAuthentication(req, res) {
+  const bearerHeader = req.headers['authorization'];
+
+  if (bearerHeader) {
+    const bearer = bearerHeader.split(' ');
+    const bearerToken = bearer[2];
+    if (bearerToken === process.env.AUTH_TOKEN) {
+      return true;
+    } else {
+      res.status(403).send('Forbidden');
+      return false;
+    }
+
+  } else {
+    res.sendStatus(403);
+    return false;
+  }
+}
+
+module.exports = { readIntents, trainModel, saveModel, detectIntent, decreaseContexts, generateRandomToken, groupContextsByName, updateContexts, getContextNameModel, writeIntent, removeIntent, train, verifyAuthentication };
