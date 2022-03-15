@@ -6,92 +6,100 @@ const Intent = require('../models/Intent');
 
 class IntentController {
   async detect(req, res, next) {
-    const intentText = req.query.text;
-    const sessionId = req.query.sessionId || utils.generateRandomToken();
+    if (utils.verifyAuthentication(req, res)) {
 
-    client.get(sessionId, async (err, session) => {
-      if (session) {
-        const sessionParameters = JSON.parse(session);
+      const intentText = req.query.text;
+      const sessionId = req.query.sessionId || utils.generateRandomToken();
 
-        let newSession = {
-          ...sessionParameters
-        };
+      client.get(sessionId, async (err, session) => {
+        if (session) {
+          const sessionParameters = JSON.parse(session);
 
-        const modelName = utils.getContextNameModel(sessionParameters.outputContexts[0]) || "./data/model.nlp";
+          let newSession = {
+            ...sessionParameters
+          };
 
-        const response = await utils.detectIntent(intentText, sessionId, modelName);
+          const modelName = utils.getContextNameModel(sessionParameters.outputContexts[0]) || "./data/model.nlp";
 
-        let inputContexts = sessionParameters.inputContexts.concat(response.inputContexts);
-        let outputContexts = sessionParameters.outputContexts.concat(response.outputContexts);
+          const response = await utils.detectIntent(intentText, sessionId, modelName);
 
-        console.log(colors.green(`Session: ${sessionId}`));
-        console.log(colors.green(`Response: ${JSON.stringify(response.messages)}`));
-        console.log(colors.green(`Input contexts: ${JSON.stringify(inputContexts)}`));
-        console.log(colors.green(`Output contexts: ${JSON.stringify(outputContexts)}`));
+          let inputContexts = sessionParameters.inputContexts.concat(response.inputContexts);
+          let outputContexts = sessionParameters.outputContexts.concat(response.outputContexts);
 
-        newSession = {
-          ...newSession,
-          inputContexts: utils.decreaseContexts(utils.updateContexts(inputContexts)),
-          outputContexts: utils.decreaseContexts(utils.updateContexts(outputContexts)),
-          lastIntent: response.intent
-        };
+          console.log(colors.green(`Session: ${sessionId}`));
+          console.log(colors.green(`Response: ${JSON.stringify(response.messages)}`));
+          console.log(colors.green(`Input contexts: ${JSON.stringify(inputContexts)}`));
+          console.log(colors.green(`Output contexts: ${JSON.stringify(outputContexts)}`));
 
-        console.log(newSession);
+          newSession = {
+            ...newSession,
+            inputContexts: utils.decreaseContexts(utils.updateContexts(inputContexts)),
+            outputContexts: utils.decreaseContexts(utils.updateContexts(outputContexts)),
+            lastIntent: response.intent
+          };
 
-        client.setex(sessionId, 1440, JSON.stringify(newSession));
+          console.log(newSession);
 
-        console.log(`${'[Aurora]'.yellow} Detected intent correctly`);
+          client.setex(sessionId, 1440, JSON.stringify(newSession));
 
-        res.send(response);
-      } else {
-        const response = await utils.detectIntent(intentText, sessionId);
+          console.log(`${'[Aurora]'.yellow} Detected intent correctly`);
 
-        const inputContexts = response.inputContexts || [];
-        const outputContexts = response.outputContexts || [];
+          res.send(response);
+        } else {
+          const response = await utils.detectIntent(intentText, sessionId);
 
-        const sessionParameters = {
-          sessionId: sessionId,
-          lastIntent: response.intent,
-          parameters: [],
-          inputContexts: inputContexts && inputContexts != [] ? utils.updateContexts(inputContexts) : inputContexts,
-          outputContexts: outputContexts && outputContexts != [] ? utils.updateContexts(response.outputContexts) : outputContexts,
+          const inputContexts = response.inputContexts || [];
+          const outputContexts = response.outputContexts || [];
+
+          const sessionParameters = {
+            sessionId: sessionId,
+            lastIntent: response.intent,
+            parameters: [],
+            inputContexts: inputContexts && inputContexts != [] ? utils.updateContexts(inputContexts) : inputContexts,
+            outputContexts: outputContexts && outputContexts != [] ? utils.updateContexts(response.outputContexts) : outputContexts,
+          }
+
+          console.log(sessionParameters);
+
+          client.setex(sessionId, 1440, JSON.stringify(sessionParameters));
+          console.log(`${'[Aurora]'.yellow} Detected intent correctly`);
+
+          res.send(response);
         }
-
-        console.log(sessionParameters);
-
-        client.setex(sessionId, 1440, JSON.stringify(sessionParameters));
-        console.log(`${'[Aurora]'.yellow} Detected intent correctly`);
-
-        res.send(response);
-      }
-    });
+      });
+    }
   }
 
   async train(req, res) {
-    console.log(`${'[Aurora]'.yellow} Bot is training`);
-    res.status(200).send({ "status": "200" });
-    const intents = await utils.readIntents();
-    await utils.trainModel(intents);
+    if (utils.verifyAuthentication(req, res)) {
+      console.log(`${'[Aurora]'.yellow} Bot is training`);
+      res.status(200).send({ "status": "200" });
+      const intents = await utils.readIntents();
+      await utils.trainModel(intents);
 
-    console.log(`${'[Aurora]'.yellow} Bot is trained sucessfully`);
+      console.log(`${'[Aurora]'.yellow} Bot is trained sucessfully`);
+    }
   }
 
   async create(req, res) {
-    const reqIntent = req.body;
-    const intents = await utils.readIntents();
+    if (utils.verifyAuthentication(req, res)) {
 
-    if (intents.find(i => i.name === reqIntent.slug)) {
-      console.log(`${'[Aurora]'.yellow} Intent already exists`);
-      res.status(200).send({ "status": "200" });
-    } else {
-      const intent = new Intent(reqIntent);
+      const reqIntent = req.body;
+      const intents = await utils.readIntents();
 
-      if (intent.isValid()) {
-        intents.push(intent);
-        await utils.writeIntent(intent.toJSON(), reqIntent.slug);
-        console.log(`${'[Aurora]'.yellow} Intent created`);
-        res.status(201).send({ "status": "201", "message": "Intent created" });
-        utils.train();
+      if (intents.find(i => i.name === reqIntent.slug)) {
+        console.log(`${'[Aurora]'.yellow} Intent already exists`);
+        res.status(409).send({ "status": "409", "message": "Intent already exists" });
+      } else {
+        const intent = new Intent(reqIntent);
+
+        if (intent.isValid()) {
+          intents.push(intent);
+          await utils.writeIntent(intent.toJSON(), reqIntent.slug);
+          console.log(`${'[Aurora]'.yellow} Intent created`);
+          res.status(201).send({ "status": "201", "message": "Intent created" });
+          utils.train();
+        }
       }
     }
   }
@@ -100,24 +108,27 @@ class IntentController {
   // }
 
   async destroy(req, res, next) {
-    const reqIntent = req.query.intent;
-    const intents = await utils.readIntents();
+    if (utils.verifyAuthentication(req, res)) {
 
-    if (!reqIntent) {
-      console.log(`${'[Aurora]'.yellow} Intent not found`);
-      res.status(404).send({ "status": "404" });
-    }
+      const reqIntent = req.query.intent;
+      const intents = await utils.readIntents();
 
-    const intent = intents.find(i => i.name === reqIntent);
+      if (!reqIntent) {
+        console.log(`${'[Aurora]'.yellow} Intent not found`);
+        res.status(404).send({ "status": "404" });
+      }
 
-    if (intent) {
-      utils.removeIntent(intent.slug);
-      console.log(`${'[Aurora]'.yellow} Intent deleted`);
-      res.status(200).send({ "status": "200" });
-      utils.train();
-    } else {
-      console.log(`${'[Aurora]'.yellow} Intent not found`);
-      res.status(404).send({ "status": "404" });
+      const intent = intents.find(i => i.name === reqIntent);
+
+      if (intent) {
+        utils.removeIntent(intent.slug);
+        console.log(`${'[Aurora]'.yellow} Intent deleted`);
+        res.status(200).send({ "status": "200" });
+        utils.train();
+      } else {
+        console.log(`${'[Aurora]'.yellow} Intent not found`);
+        res.status(404).send({ "status": "404" });
+      }
     }
   }
 
