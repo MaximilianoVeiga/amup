@@ -10,7 +10,9 @@
     "oi",
     "eai",
     "diga",
-    "ola"
+    "ola",
+    "dale",
+    "opa"
   ],
   "inputContexts": [],
   "outputContexts": [],
@@ -23,7 +25,7 @@
           "plataform": "webchat",
           "text": [
             "Oi, como você está?",
-            "Olá, como você esta?"
+            "Olá, como você está?"
           ]
         }
       ]
