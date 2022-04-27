@@ -1,11 +1,11 @@
-class IntentController {
+class AuthController {
   async signin(req, res) {
     const { username, password } = req.body;
 
     if (!username || !password) {
       return res.status(400).send({ error: 'You must provide an username and a password' });
     } else {
-      if (username === 'admin' && password === 'admin') {
+      if (username === process.env.USERNAME && password === process.env.PASSWORD) {
         const token = process.env.AUTH_TOKEN;
 
         return res.send({ accessToken: token });
@@ -16,4 +16,4 @@ class IntentController {
   }
 }
 
-module.exports = new IntentController();
+module.exports = new AuthController();
