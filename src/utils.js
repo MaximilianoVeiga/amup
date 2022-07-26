@@ -107,7 +107,7 @@ async function addResponses(intent, intentSlug, manager) {
   return manager;
 }
 
-async function train () {
+async function train() {
   console.log(`${'[Aurora]'.yellow} Bot is training`);
   const intents = await readIntents();
   await trainModel(intents);
@@ -115,7 +115,7 @@ async function train () {
 
 async function writeIntent(intent, fileName) {
   const json = JSON.stringify(intent);
-  const intentPath = path.join(__dirname, 'agent' ,'intents', fileName + ".json");
+  const intentPath = path.join(__dirname, 'agent', 'intents', fileName + ".json");
   fs.writeFileSync(intentPath, json, "utf8", (err) => {
     if (err) {
       console.log(err);
@@ -124,11 +124,11 @@ async function writeIntent(intent, fileName) {
 }
 
 async function removeIntent(fileName) {
-  const intentPath = path.join(__dirname, 'agent' ,'intents', fileName + ".json");
+  const intentPath = path.join(__dirname, 'agent', 'intents', fileName + ".json");
 
   fs.unlink(intentPath, function (err) {
     if (err) throw err;
-});
+  });
 }
 
 async function saveModel(manager, fileName = "./data/model.nlp") {
@@ -299,12 +299,24 @@ async function readIntents() {
     .map((name) => require(path.join(directoryPath, name)));
 }
 
+function slugify(text) {
+  return text
+    .toString()
+    .toLowerCase()
+    .replace("intent", '') // Remove intent name
+    .replace(/\s+/g, '-') // Replace spaces with -
+    .replace(/[^\w-]+/g, '') // Remove all non-word chars
+    .replace(/--+/g, '-') // Replace multiple - with single -
+    .replace(/^-+/, '') // Trim - from start of text
+    .replace(/-+$/, ''); // Trim - from end of text
+}
+
 function verifyAuthentication(req, res) {
-  const bearerHeader = req.headers['authorization'];
+  const bearerHeader = req.headers['Authorization'] || req.headers['authorization'];
 
   if (bearerHeader) {
     const bearer = bearerHeader.split(' ');
-    const bearerToken = bearer[2];
+    const bearerToken = bearer[1];
     if (bearerToken === process.env.AUTH_TOKEN) {
       return true;
     } else {
@@ -318,4 +330,20 @@ function verifyAuthentication(req, res) {
   }
 }
 
-module.exports = { readIntents, trainModel, saveModel, detectIntent, decreaseContexts, generateRandomToken, groupContextsByName, updateContexts, getContextNameModel, writeIntent, removeIntent, train, verifyAuthentication };
+module.exports = {
+  readIntents, 
+  trainModel, 
+  saveModel, 
+  detectIntent, 
+  decreaseContexts, 
+  generateRandomToken, 
+  groupContextsByName, 
+  updateContexts, 
+  getContextNameModel, 
+  writeIntent, 
+  removeIntent, 
+  train, 
+  verifyAuthentication,
+  slugify
+};
+

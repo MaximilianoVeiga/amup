@@ -1,7 +1,7 @@
 {
   "id": "mEogkJzHot9s8dH6pv3PMo",
   "name": "Address Intent",
-  "slug": "Address",
+  "slug": "address",
   "fallbackIntent": false,
   "endInteraction": false,
   "priority": 500000,

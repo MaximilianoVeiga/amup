@@ -1,14 +1,14 @@
 {
-  "id": "b4oBmpYHz78ZJYZykXdX7f",
-  "name": "Address No Intent",
-  "slug": "AddressNo",
+  "id": "4ghn5qS3zFoEKWNHpFB3fY",
+  "name": "Address Yes Intent",
+  "slug": "address-yes",
   "fallbackIntent": false,
   "endInteraction": false,
   "priority": 500000,
   "utterances": [
-    "não",
-    "não era isso",
-    "não quero"
+    "sim",
+    "isso ai",
+    "isso mesmo"
   ],
   "inputContexts": [
     {
@@ -24,7 +24,7 @@
           "type": "message",
           "plataform": "webchat",
           "text": [
-            "Certo, não vou modificar seu endereço."
+            "Seu endereço foi modificado com sucesso."
           ]
         }
       ]

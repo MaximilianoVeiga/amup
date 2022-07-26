@@ -1,0 +1,27 @@
+{
+    "id": "g39gBrHM6uDm4ahJhMqHJ1",
+    "name": "Max Yes Intent",
+    "slug": "maxyes",
+    "fallbackIntent": false,
+    "endInteraction": false,
+    "priority": 500000,
+    "utterances": [
+        "sim, sou o max"
+    ],
+    "inputContexts": [],
+    "outputContexts": [],
+    "responses": [
+        {
+            "parameters": [],
+            "message": [
+                {
+                    "type": "message",
+                    "plataform": "webchat",
+                    "text": [
+                        "Olá, Maximiliano!"
+                    ]
+                }
+            ]
+        }
+    ]
+}
