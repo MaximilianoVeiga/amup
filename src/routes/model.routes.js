@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const IAController = require('../controllers/IAController');
+const ModelController = require('../controllers/ModelController');
 
-router.get('/detectIntent', IAController.detect);
+router.get('/detectIntent', ModelController.detect);
 router.get('/train', IAController.train);
 
 

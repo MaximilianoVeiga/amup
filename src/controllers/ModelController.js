@@ -3,7 +3,7 @@ const client = redis.createClient(6379);
 const utils = require("../utils");
 const colors = require("colors");
 
-class IAController {
+class ModelController {
   async detect(req, res, next) {
     if (utils.verifyAuthentication(req, res)) {
 
@@ -81,4 +81,4 @@ class IAController {
   }
 }
 
-module.exports = new IAController();
+module.exports = new ModelController();

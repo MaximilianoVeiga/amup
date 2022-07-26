@@ -16,11 +16,11 @@ const port = process.env.PORT || 3000;
 
 const colors = require("colors");
 
-const iaRouter = require('./routes/ia.routes');
+const modelRouter = require('./routes/model.routes');
 const authRouter = require('./routes/auth.routes');
 const intentsRouter = require('./routes/intent.routes');
 
-app.use('/', iaRouter);
+app.use('/', modelRouter);
 app.use('/api', authRouter);
 app.use('/api', intentsRouter);
 
