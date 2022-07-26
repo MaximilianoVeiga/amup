@@ -1,7 +1,7 @@
 {
     "id": "mLbRitzy8gtCiyDwGZBf1S",
     "name": "Welcome Yes Intent",
-    "slug": "welcomeyes",
+    "slug": "welcome-yes",
     "fallbackIntent": false,
     "endInteraction": false,
     "priority": 500000,

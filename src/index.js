@@ -16,18 +16,18 @@ const port = process.env.PORT || 3000;
 
 const colors = require("colors");
 
-const intentRouter = require('./routes/intent.routes');
+const iaRouter = require('./routes/ia.routes');
 const authRouter = require('./routes/auth.routes');
-const homeRouter = require('./routes/home.routes');
+const intentsRouter = require('./routes/intent.routes');
 
-app.use('/', intentRouter);
+app.use('/', iaRouter);
 app.use('/api', authRouter);
-app.use('/api', homeRouter);
+app.use('/api', intentsRouter);
 
 app.get("/", (req, res) => {
-  res.send("Aurora API");
+  res.send("[AMUP] - Artifical Machine Understanding Plataform - API");
 });
 
 app.listen(port, () => {
-  console.log(`${'[Aurora]'.yellow} Server is running on http://${url}:${port}`);
+  console.log(`${'[AMUP]'.yellow} Server is running on http://${url}:${port}`);
 });

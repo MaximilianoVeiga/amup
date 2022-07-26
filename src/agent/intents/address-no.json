@@ -1,16 +1,20 @@
 {
-  "id": "mXLWu7tddLFDPxiNBgrX2J",
-  "name": "End Conversation Intent",
-  "slug": "End",
+  "id": "b4oBmpYHz78ZJYZykXdX7f",
+  "name": "Address No Intent",
+  "slug": "address-no",
   "fallbackIntent": false,
-  "endInteraction": true,
+  "endInteraction": false,
   "priority": 500000,
   "utterances": [
-    "até mais",
-    "valeu",
-    "obrigado, tchau"
+    "não",
+    "não era isso",
+    "não quero"
   ],
-  "inputContexts": [],
+  "inputContexts": [
+    {
+      "name": "address-followup"
+    }
+  ],
   "outputContexts": [],
   "responses": [
     {
@@ -20,8 +24,7 @@
           "type": "message",
           "plataform": "webchat",
           "text": [
-            "Obrigado por entrar em contato!",
-            "Muito obrigado por conversar conosco!"
+            "Certo, não vou modificar seu endereço."
           ]
         }
       ]

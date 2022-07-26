@@ -1,18 +1,14 @@
 {
-  "id": "vfjJBLyupnaof8d5ycPvCP",
-  "name": "Welcome Intent",
-  "slug": "welcome",
+  "id": "mXLWu7tddLFDPxiNBgrX2J",
+  "name": "End Conversation Intent",
+  "slug": "end-conversation",
   "fallbackIntent": false,
-  "endInteraction": false,
+  "endInteraction": true,
   "priority": 500000,
   "utterances": [
-    "olá",
-    "oi",
-    "eai",
-    "diga",
-    "ola",
-    "dale",
-    "opa"
+    "até mais",
+    "valeu",
+    "obrigado, tchau"
   ],
   "inputContexts": [],
   "outputContexts": [],
@@ -24,8 +20,8 @@
           "type": "message",
           "plataform": "webchat",
           "text": [
-            "Oi, como você está?",
-            "Olá, como você está?"
+            "Obrigado por entrar em contato!",
+            "Muito obrigado por conversar conosco!"
           ]
         }
       ]
