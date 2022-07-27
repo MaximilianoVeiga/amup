@@ -26,7 +26,7 @@
     "short-uuid": "^4.2.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.14"
+    "nodemon": "^2.0.19"
   },
   "repository": {
     "type": "git",
