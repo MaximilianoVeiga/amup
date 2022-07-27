@@ -1,12 +1,12 @@
 {
-  "name": "aurora-nlpjs",
+  "name": "amup",
   "version": "1.0.0",
-  "description": "",
+  "description": "Artificial Machine Understanding Platform",
   "main": "src/index.js",
   "scripts": {
-    "start": "redis-server 2>&1 & node src/index.js",
-    "dev": "redis-server 2>&1 & nodemon src/index.js",
-    "dev-tunnel": "npx ngrok http 3000 > /dev/null & 2>&1 & redis-server 2>&1 & nodemon src/index.js"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "dev-tunnel": "npx ngrok http 3000 > /dev/null & 2>&1 & nodemon src/index.js"
   },
   "keywords": [],
   "author": "Maximiliano Veiga",
@@ -26,7 +26,7 @@
     "short-uuid": "^4.2.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.14"
+    "nodemon": "^2.0.19"
   },
   "repository": {
     "type": "git",
