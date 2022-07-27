@@ -1,0 +1,276 @@
+{
+  "settings": {
+    "languages": [
+      "pt"
+    ],
+    "forceNER": true,
+    "tag": "nlp",
+    "threshold": 0.5,
+    "autoLoad": true,
+    "autoSave": true,
+    "modelFileName": "model.nlp",
+    "calculateSentiment": true
+  },
+  "nluManager": {
+    "settings": {
+      "tag": "nlu-manager"
+    },
+    "locales": [
+      "pt"
+    ],
+    "languageNames": {},
+    "domainManagers": {
+      "pt": {
+        "settings": {
+          "locale": "pt",
+          "trainByDomain": false,
+          "tag": "domain-manager-pt",
+          "nluByDomain": {
+            "default": {
+              "className": "NeuralNlu",
+              "settings": {}
+            }
+          },
+          "useStemDict": true
+        },
+        "stemDict": {
+          "nao": {
+            "intent": "address-no",
+            "domain": "default"
+          },
+          "era,isso,nao": {
+            "intent": "address-no",
+            "domain": "default"
+          },
+          "nao,quer": {
+            "intent": "address-no",
+            "domain": "default"
+          },
+          "sim": {
+            "intent": "address-yes",
+            "domain": "default"
+          },
+          "ai,isso": {
+            "intent": "address-yes",
+            "domain": "default"
+          },
+          "isso,mesm": {
+            "intent": "address-yes",
+            "domain": "default"
+          }
+        },
+        "intentDict": {
+          "address-no": "default",
+          "address-yes": "default"
+        },
+        "sentences": [
+          {
+            "domain": "default",
+            "utterance": "não",
+            "intent": "address-no"
+          },
+          {
+            "domain": "default",
+            "utterance": "não era isso",
+            "intent": "address-no"
+          },
+          {
+            "domain": "default",
+            "utterance": "não quero",
+            "intent": "address-no"
+          },
+          {
+            "domain": "default",
+            "utterance": "sim",
+            "intent": "address-yes"
+          },
+          {
+            "domain": "default",
+            "utterance": "isso ai",
+            "intent": "address-yes"
+          },
+          {
+            "domain": "default",
+            "utterance": "isso mesmo",
+            "intent": "address-yes"
+          }
+        ],
+        "domains": {
+          "master_domain": {
+            "settings": {
+              "locale": "pt",
+              "tag": "nlu-pt",
+              "keepStopwords": true,
+              "nonefeatureValue": 1,
+              "nonedeltaMultiplier": 1.2,
+              "spellCheck": false,
+              "spellCheckDistance": 1,
+              "filterZeros": true,
+              "log": true
+            },
+            "features": {
+              "nao": 1,
+              "era": 1,
+              "isso": 1,
+              "quer": 1,
+              "sim": 1,
+              "ai": 1,
+              "mesm": 1
+            },
+            "intents": {
+              "address-no": 1,
+              "address-yes": 1
+            },
+            "intentFeatures": {
+              "address-no": {
+                "nao": 1,
+                "era": 1,
+                "isso": 1,
+                "quer": 1
+              },
+              "address-yes": {
+                "sim": 1,
+                "isso": 1,
+                "ai": 1,
+                "mesm": 1
+              }
+            },
+            "featuresToIntent": {
+              "nao": [
+                "address-no"
+              ],
+              "era": [
+                "address-no"
+              ],
+              "isso": [
+                "address-no",
+                "address-yes"
+              ],
+              "quer": [
+                "address-no"
+              ],
+              "sim": [
+                "address-yes"
+              ],
+              "ai": [
+                "address-yes"
+              ],
+              "mesm": [
+                "address-yes"
+              ]
+            },
+            "neuralNetwork": {
+              "settings": {
+                "locale": "pt",
+                "tag": "nlu-pt",
+                "keepStopwords": true,
+                "nonefeatureValue": 1,
+                "nonedeltaMultiplier": 1.2,
+                "spellCheck": false,
+                "spellCheckDistance": 1,
+                "filterZeros": true,
+                "log": true
+              },
+              "features": [
+                "nao",
+                "era",
+                "isso",
+                "quer",
+                "sim",
+                "ai",
+                "mesm"
+              ],
+              "intents": [
+                "address-no",
+                "address-yes"
+              ],
+              "perceptrons": [
+                [
+                  11.339093208312988,
+                  1.864601969718933,
+                  -1.5345239639282227,
+                  0.4207683801651001,
+                  -2.6227519512176514,
+                  -1.717146396636963,
+                  -1.6671910285949707,
+                  2.6547186838128605
+                ],
+                [
+                  -5.775678634643555,
+                  -4.233112812042236,
+                  4.320937633514404,
+                  -0.3902326822280884,
+                  8.597243309020996,
+                  4.277154445648193,
+                  4.276912212371826,
+                  5.687836335841006
+                ]
+              ]
+            }
+          }
+        }
+      }
+    },
+    "intentDomains": {},
+    "extraSentences": [
+      [
+        "pt",
+        "não"
+      ],
+      [
+        "pt",
+        "não era isso"
+      ],
+      [
+        "pt",
+        "não quero"
+      ],
+      [
+        "pt",
+        "sim"
+      ],
+      [
+        "pt",
+        "isso ai"
+      ],
+      [
+        "pt",
+        "isso mesmo"
+      ]
+    ]
+  },
+  "ner": {
+    "settings": {
+      "tag": "ner",
+      "entityPreffix": "%",
+      "entitySuffix": "%"
+    },
+    "rules": {}
+  },
+  "nlgManager": {
+    "settings": {
+      "tag": "nlg-manager"
+    },
+    "responses": {
+      "pt": {
+        "address-no": [
+          {
+            "answer": "Certo, não vou modificar seu endereço."
+          }
+        ],
+        "address-yes": [
+          {
+            "answer": "Seu endereço foi modificado com sucesso."
+          }
+        ]
+      }
+    }
+  },
+  "actionManager": {
+    "settings": {
+      "tag": "action-manager"
+    },
+    "actions": {}
+  },
+  "slotManager": {}
+}

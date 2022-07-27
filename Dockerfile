@@ -5,8 +5,8 @@ WORKDIR /opt/amup/core
 # Copy over source code
 COPY . .
 # Install all packages
-RUN npm i
+RUN npm ci --production
 # Expose port to outside world
 EXPOSE 3000
 # Start server up
-CMD [ "redis-server", "2>&1", "&", "node", "src/index.js" ]
+CMD [ "node", "src/index.js" ]

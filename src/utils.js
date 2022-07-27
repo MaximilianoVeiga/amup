@@ -5,6 +5,18 @@ const directoryPath = path.join(__dirname, "agent/intents");
 const { NlpManager } = require("node-nlp");
 
 async function detectIntent(query, sessionId = null, model) {
+  const modelName = model || "./src/agent/data/model.nlp";
+
+  const modelIsValid = await verifyModel(modelName);
+
+  if (!modelIsValid) {
+    console.log(`${'[AMUP]'.yellow} Bot is training`);
+
+    trainModel(await readIntents());
+
+    console.log(`${'[AMUP]'.yellow} Bot is trained sucessfully`);
+  }
+
   const manager = new NlpManager({ languages: ["pt"], forceNER: true });
   await manager.load(model);
 
@@ -15,8 +27,21 @@ async function detectIntent(query, sessionId = null, model) {
   return response;
 }
 
+function createDataFolder() {
+  if (!fs.existsSync("./src/agent/data")) {
+    fs.mkdirSync("./src/agent/data");
+  }
+}
+
 function generateRandomToken() {
   return short.generate();
+}
+
+async function verifyModel(modelName) {
+  if (fs.existsSync(modelName)) {
+    return true;
+  }
+  return false;
 }
 
 async function trainModel(intents) {
@@ -36,7 +61,9 @@ async function trainModel(intents) {
       addResponses(groupIntent, groupIntent.slug, contextManager);
     });
 
-    await saveModel(contextManager, `./data/model-${context}.nlp`);
+    createDataFolder();
+
+    await saveModel(contextManager, `./src/agent/data/model-${context}.nlp`);
   }
 
   intents.map((intent) => {
@@ -131,7 +158,7 @@ async function removeIntent(fileName) {
   });
 }
 
-async function saveModel(manager, fileName = "./data/model.nlp") {
+async function saveModel(manager, fileName = "./src/agent/data/model.nlp") {
   await manager.train();
   manager.save(fileName);
 }
@@ -149,10 +176,10 @@ function decreaseContexts(contexts) {
 }
 
 function getContextNameModel(context) {
-  let path = "./data/model.nlp";
+  let path = "./src/agent/data/model.nlp";
   if (context && context.name) {
     const contextName = context.name;
-    path = `./data/model-${contextName}.nlp`;
+    path = `./src/agent/data/model-${contextName}.nlp`;
     console.log(path);
   }
   return path;
@@ -344,6 +371,7 @@ module.exports = {
   removeIntent, 
   train, 
   verifyAuthentication,
-  slugify
+  slugify,
+  verifyModel
 };
 

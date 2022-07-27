@@ -1,7 +1,10 @@
-const redis = require('redis');
-const client = redis.createClient(6379);
 const utils = require("../utils");
 const colors = require("colors");
+const redis = require('redis');
+const client = redis.createClient({
+      host: 'localhost',
+      port: 6379
+});
 
 class ModelController {
   async detect(req, res, next) {
@@ -18,7 +21,7 @@ class ModelController {
             ...sessionParameters
           };
 
-          const modelName = utils.getContextNameModel(sessionParameters.outputContexts[0]) || "./data/model.nlp";
+          const modelName = utils.getContextNameModel(sessionParameters.outputContexts[0]) || "./src/agent/data/model.nlp";
 
           const response = await utils.detectIntent(intentText, sessionId, modelName);
 
