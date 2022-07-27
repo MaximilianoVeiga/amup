@@ -2,7 +2,7 @@ const utils = require("../utils");
 const colors = require("colors");
 const redis = require('redis');
 const client = redis.createClient({
-      host: 'localhost',
+      host: '172.10.0.2',
       port: 6379
 });
 
