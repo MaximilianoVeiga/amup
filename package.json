@@ -25,6 +25,7 @@
     "short-uuid": "^4.2.0"
   },
   "devDependencies": {
+    "eslint": "^8.21.0",
     "nodemon": "^2.0.19"
   },
   "repository": {

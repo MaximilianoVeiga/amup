@@ -1,5 +1,5 @@
 # Build final runtime container
-FROM node:16-alpine
+FROM node:16-slim
 
 # Set directory for all files
 WORKDIR /opt/amup/core

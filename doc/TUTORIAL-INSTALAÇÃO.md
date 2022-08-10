@@ -38,7 +38,7 @@ docker run -d --name amup-redis --network horizon-network -p 6379:6379 redis
 Utilizando o Docker, crie um container para o AMUP Core.
 
 ```bash
-docker run -d --name amup-core --network horizon-network -p 3000:3000 thehorizondev/amup:0.0.5
+docker run -d --name amup-core --network horizon-network -p 3000:3000 thehorizondev/amup:0.0.6
 ```
 
 Pronto! O AMUP está instalado e funcionando.

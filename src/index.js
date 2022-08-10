@@ -1,6 +1,6 @@
 const path = require('path');
 
-require('dotenv').config({path: path.join(__dirname, '..', '.env')})
+require('dotenv').config({ path: path.join(__dirname, '..', '.env') })
 
 const express = require("express");
 const app = express();
@@ -25,9 +25,9 @@ app.use('/api', authRouter);
 app.use('/api', intentsRouter);
 
 app.get("/", (req, res) => {
-  res.send("[AMUP] - Artifical Machine Understanding Plataform - API");
+	res.send("[AMUP] - Artifical Machine Understanding Plataform - API");
 });
 
 app.listen(port, () => {
-  console.log(`${'[AMUP]'.yellow} Server is running on http://${url}:${port}`);
+	console.log(`${'[AMUP]'.yellow} Server is running on http://${url}:${port}`);
 });
