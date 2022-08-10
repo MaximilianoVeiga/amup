@@ -15,7 +15,6 @@ O AMUP é um software livre, você pode instalá-lo no seu computador.
 
 1. Baixe o [repositorio](https://github.com/MaximilianoVeiga/aurora-nlpjs) no GitHub.
 
-
 #### Linux
 
 Clone o repositório:

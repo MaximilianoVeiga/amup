@@ -1,0 +1,3 @@
+doc/*
+.env
+.env.example
