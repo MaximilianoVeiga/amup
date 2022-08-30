@@ -12,6 +12,11 @@ class ModelController {
 
 			const intentText = req.query.text;
 			const sessionId = req.query.sessionId || utils.generateRandomToken();
+			let parameters;
+
+			try {
+				parameters = JSON.parse(req.query.parameters);
+			} catch (e) { }
 
 			client.get(sessionId, async (err, session) => {
 				if (session) {
@@ -23,7 +28,7 @@ class ModelController {
 
 					const modelName = utils.getContextNameModel(sessionParameters.outputContexts[0]) || "./src/agent/data/model.nlp";
 
-					const response = await utils.detectIntent(intentText, sessionId, modelName);
+					const response = await utils.detectIntent(intentText, sessionId, modelName, parameters);
 
 					let inputContexts = sessionParameters.inputContexts.concat(response.inputContexts);
 					let outputContexts = sessionParameters.outputContexts.concat(response.outputContexts);
@@ -37,7 +42,8 @@ class ModelController {
 						...newSession,
 						inputContexts: utils.decreaseContexts(utils.updateContexts(inputContexts)),
 						outputContexts: utils.decreaseContexts(utils.updateContexts(outputContexts)),
-						lastIntent: response.intent
+						lastIntent: response.intent,
+						parameters: parameters ? parameters : sessionParameters.parameters
 					};
 
 					console.log(newSession);
@@ -48,7 +54,7 @@ class ModelController {
 
 					res.send(response);
 				} else {
-					const response = await utils.detectIntent(intentText, sessionId, "./src/agent/data/model.nlp");
+					const response = await utils.detectIntent(intentText, sessionId, "./src/agent/data/model.nlp", parameters);
 
 					const inputContexts = response.inputContexts || [];
 					const outputContexts = response.outputContexts || [];
@@ -56,7 +62,7 @@ class ModelController {
 					const sessionParameters = {
 						sessionId: sessionId,
 						lastIntent: response.intent,
-						parameters: [],
+						parameters: parameters ? parameters : [],
 						inputContexts: inputContexts && inputContexts != [] ? utils.updateContexts(inputContexts) : inputContexts,
 						outputContexts: outputContexts && outputContexts != [] ? utils.updateContexts(response.outputContexts) : outputContexts,
 					}

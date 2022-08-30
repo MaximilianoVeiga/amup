@@ -3,8 +3,9 @@ const fs = require("fs");
 const short = require('short-uuid');
 const directoryPath = path.join(__dirname, "agent/intents");
 const { NlpManager } = require("node-nlp");
+const axios = require("axios");
 
-async function detectIntent(query, sessionId = null, model = "./src/agent/data/model.nlp") {
+async function detectIntent(query, sessionId = null, model = "./src/agent/data/model.nlp", parameters) {
 	const modelIsValid = await verifyModel(model);
 
 	if (!modelIsValid) {
@@ -23,8 +24,7 @@ async function detectIntent(query, sessionId = null, model = "./src/agent/data/m
 	manager.load(model);
 
 	const nluResponse = await manager.process("pt", query);
-	console.log(nluResponse);
-	const response = makeResponse(nluResponse, sessionId);
+	const response = makeResponse(nluResponse, sessionId, parameters);
 
 	return response;
 }
@@ -62,6 +62,7 @@ async function trainModel(intents) {
 				contextManager.addDocument("pt", phrase, groupIntent.slug);
 			});
 
+
 			addResponses(groupIntent, groupIntent.slug, contextManager);
 		});
 
@@ -81,6 +82,12 @@ async function trainModel(intents) {
 			intent.utterances.map((phrase) => {
 				manager.addDocument("pt", phrase, intentSlug);
 			});
+
+			if (intent.entities) {
+				intent.entities.map((entity) => {
+					manager.addNamedEntityText(entity.type, entity.name, ['pt'], entity.phrases);
+				});
+			}
 
 			addResponses(intent, intentSlug, manager);
 		}
@@ -236,38 +243,17 @@ function updateContexts(contexts) {
 	return newContexts;
 }
 
-async function makeResponse(nluResponse, sessionId) {
-	const { intent, entities, context } = nluResponse;
-	const { confidence, value } = intent;
-	const { lifespan } = context;
-	const { text, confidence: entityConfidence, entity, metadata } = entities[0];
-
-	return {
-		sessionId,
-		intent: {
-			confidence,
-			value,
-		},
-		entities: {
-			text,
-			confidence: entityConfidence,
-			entity,
-			metadata,
-		},
-		context: {
-			lifespan,
-		},
-	};
-}
-
-async function makeResponse(response, sessionId = null) {
+async function makeResponse(response, sessionId = null, parameters) {
 	const intentData = await getIntentData(response.intent);
 
 	const entities = response.entities.map((entity) => {
+		const entityValue = entity && entity.resolution && entity.resolution.value ? entity?.resolution?.value : entity.option;
+		const entitySource = entity.utteranceText ? entity.utteranceText : entity.type;
+
 		return {
 			entityType: entity.entity,
-			value: entity.resolution.value,
-			source: entity.utteranceText,
+			value: entityValue,
+			source: entitySource,
 			confidence: entity.accuracy,
 		};
 	});
@@ -277,10 +263,6 @@ async function makeResponse(response, sessionId = null) {
 		displayName: intentData.name,
 		endInteraction: intentData.endInteraction,
 		id: short.generate()
-	}
-
-	const webhook = {
-		webhookUsed: false
 	}
 
 	const sentiment = {
@@ -303,6 +285,7 @@ async function makeResponse(response, sessionId = null) {
 
 			if (messageText.length > 1) {
 				const random = Math.floor(Math.random() * (messageText.length - 1 + 1) + 1) - 1;
+
 				messageVariation.push(messageText[random]);
 			} else {
 				messageVariation.push(messageText[0]);
@@ -321,9 +304,33 @@ async function makeResponse(response, sessionId = null) {
 			const element = messages[i];
 			element.suggestions = suggestions[i];
 		}
+
+		messages.map((message) => {
+			if (message.text && parameters && parameters.first_name) {
+				message.text = message.text.replace(/\$first_name/g, parameters.first_name);
+			}
+			if (message.text && parameters && parameters.last_name) {
+				message.text = message.text.replace(/\$last_name/g, parameters.last_name);
+			}
+			if (message.text && parameters && parameters.email) {
+				message.text = message.text.replace(/\$email/g, parameters.email);
+			}
+			if (message.text && parameters && parameters.phone) {
+				message.text = message.text.replace(/\$phone/g, parameters.phone);
+			}
+			if (message.text && parameters && parameters.address) {
+				message.text = message.text.replace(/\$address/g, parameters.address);
+			}
+		});
 	});
 
-	return {
+	const webhookEnabled = intentData.webhookUsed;
+
+	const webhook = {
+		webhookUsed: webhookEnabled
+	}
+
+	let payload = {
 		id: sessionId ? sessionId : short.generate(),
 		fulfillmentText: messages.length === 1 ? messages[0].text : "",
 		utterance: response.utterance,
@@ -337,6 +344,44 @@ async function makeResponse(response, sessionId = null) {
 		sentimentAnalysisResult: sentiment,
 		intent: intent,
 	};
+
+	console.log("webhookEnabled", webhookEnabled);
+
+	if (webhookEnabled) {
+		const webhookResponse = await sendWebhook(sessionId, intent, entities, messages, parameters);
+		payload.messages = webhookResponse && webhookResponse.messages ? webhookResponse.messages : [];
+
+		return payload
+	}
+
+	return payload
+}
+
+async function sendWebhook(sessionId, intent, entities, messages, parameters) {
+	const webhookUrl = process.env.WEBHOOK_URL;
+	const webhookSecret = process.env.WEBHOOK_SECRET;
+	console.log(webhookUrl);
+	console.log(webhookSecret);
+	console.log('====================');
+	const webhookPayload = {
+		sessionId: sessionId,
+		intent: intent,
+		entities: entities,
+		parameters: parameters,
+		messages: messages,
+
+	};
+	const webhookHeaders = {
+		"Content-Type": "application/json",
+		"Authorization": webhookSecret,
+	};
+
+	try {
+		const response = await axios.post(webhookUrl, webhookPayload, { headers: webhookHeaders });
+		return response.data;
+	} catch (error) {
+		console.log(error);
+	}
 }
 
 async function getIntentData(slug) {
@@ -400,4 +445,3 @@ module.exports = {
 	slugify,
 	verifyModel
 };
-
