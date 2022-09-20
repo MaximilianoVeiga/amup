@@ -69,6 +69,13 @@ async function trainModel(intents) {
 		await saveModel(contextManager, `./src/agent/data/model-${context}.nlp`);
 	}
 
+	const entities = generateEntities();
+
+	entities.map((entity) => {
+		console.log(entity);
+		manager.addNamedEntityText(entity.type, entity.name, ["pt"], entity.data);
+	});
+
 	intents.map((intent) => {
 		const intentSlug = intent.slug;
 		const intentDomain = intent.domain;
@@ -96,6 +103,48 @@ async function trainModel(intents) {
 	removeOldModel("./src/agent/data/model.nlp");
 
 	await saveModel(manager, "./src/agent/data/model.nlp");
+}
+
+function generateEntities() {
+	const entitiesArray = [];
+
+	entitiesArray.push({
+		name: "date",
+		type: "time",
+		data: ["hoje", "amanhã", "depois de amanhã", "ontem", "anteontem", "semana que vem", "semana passada", "mês que vem", "mês passado", "ano que vem", "ano passado"],
+	});
+
+	entitiesArray.push({
+		name: "time",
+		type: "time",
+		data: ["0:00", "1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00", "24:00"],
+	});
+
+	entitiesArray.push({
+		name: "day",
+		type: "time",
+		data: ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"],
+	});
+
+	entitiesArray.push({
+		name: "month",
+		type: "time",
+		data: ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"],
+	});
+
+	entitiesArray.push({
+		name: "year",
+		type: "time",
+		data: ["2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"],
+	});
+
+	entitiesArray.push({
+		name: "number",
+		type: "number",
+		data: ["um", "dois", "três", "quatro", "cinco", "seis", "sete", "oito", "nove", "dez", "onze", "doze", "treze", "catorze", "quinze", "dezesseis", "dezessete", "dezoito", "dezenove", "vinte", "trinta", "quarenta", "cinquenta", "sessenta", "setenta", "oitenta", "noventa", "cem", "cento", "mil"],
+	});
+
+	return entitiesArray;
 }
 
 function removeOldModel(modelName) {
@@ -258,6 +307,17 @@ async function makeResponse(response, sessionId = null, parameters) {
 		};
 	});
 
+	let newEntitiesCreated = {};
+
+	entities.map((entity) => {
+		newEntitiesCreated[entity.entityType] = entity.source;
+	});
+
+	parameters = {
+		...parameters,
+		...newEntitiesCreated,
+	};
+
 	const intent = {
 		isFallback: response.intent === "None" ? true : false,
 		displayName: intentData.name,
@@ -301,9 +361,13 @@ async function makeResponse(response, sessionId = null, parameters) {
 		}
 
 		for (let i = 0; i < messages.length; i++) {
-			const element = messages[i];
-			element.suggestions = suggestions[i];
+			// push suggestions on the last message
+			if (i === messages.length - 1) {
+				messages[i].suggestions = suggestions[0];
+			}
 		}
+
+		console.log(parameters);
 
 		messages.map((message) => {
 			if (message.text && parameters && parameters.first_name) {
@@ -320,6 +384,18 @@ async function makeResponse(response, sessionId = null, parameters) {
 			}
 			if (message.text && parameters && parameters.address) {
 				message.text = message.text.replace(/\$address/g, parameters.address);
+			}
+			if (message.text && parameters && parameters.time) {
+				message.text = message.text.replace(/\$time/g, parameters.time);
+			}
+			if (message.text && parameters && parameters.date) {
+				message.text = message.text.replace(/\$date/g, parameters.date);
+			}
+			if (message.text && parameters && parameters.day) {
+				message.text = message.text.replace(/\$day/g, parameters.day);
+			}
+			if (message.text && parameters && parameters.service) {
+				message.text = message.text.replace(/\$service/g, parameters.service);
 			}
 		});
 	});
@@ -345,8 +421,6 @@ async function makeResponse(response, sessionId = null, parameters) {
 		intent: intent,
 	};
 
-	console.log("webhookEnabled", webhookEnabled);
-
 	if (webhookEnabled) {
 		const webhookResponse = await sendWebhook(sessionId, intent, entities, messages, parameters);
 		payload.messages = webhookResponse && webhookResponse.messages ? webhookResponse.messages : [];
@@ -360,9 +434,7 @@ async function makeResponse(response, sessionId = null, parameters) {
 async function sendWebhook(sessionId, intent, entities, messages, parameters) {
 	const webhookUrl = process.env.WEBHOOK_URL;
 	const webhookSecret = process.env.WEBHOOK_SECRET;
-	console.log(webhookUrl);
-	console.log(webhookSecret);
-	console.log('====================');
+
 	const webhookPayload = {
 		sessionId: sessionId,
 		intent: intent,

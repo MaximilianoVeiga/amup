@@ -35,6 +35,7 @@ class ModelController {
 
 					console.log(colors.green(`Session: ${sessionId}`));
 					console.log(colors.green(`Response: ${JSON.stringify(response.messages)}`));
+					console.log(colors.green(`Entities: ${JSON.stringify(response.entities)}`));
 					console.log(colors.green(`Input contexts: ${JSON.stringify(inputContexts)}`));
 					console.log(colors.green(`Output contexts: ${JSON.stringify(outputContexts)}`));
 
@@ -45,8 +46,6 @@ class ModelController {
 						lastIntent: response.intent,
 						parameters: parameters ? parameters : sessionParameters.parameters
 					};
-
-					console.log(newSession);
 
 					client.setex(sessionId, 1440, JSON.stringify(newSession));
 
