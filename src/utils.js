@@ -309,7 +309,12 @@ async function makeResponse(response, sessionId = null, parameters) {
 	let newEntitiesCreated = {};
 
 	entities.map((entity) => {
-		newEntitiesCreated[entity.entityType] = entity.source;
+		console.log(entity.entityType)
+		if (entity.entityType === "time") {
+			newEntitiesCreated[entity.entityType] = entity.source;
+		} else if (entity.entityType !== "boolean") {
+			newEntitiesCreated[entity.entityType] = capitalizeFirstLetter(entity.value);
+		}
 	});
 
 	parameters = {
@@ -391,7 +396,6 @@ async function makeResponse(response, sessionId = null, parameters) {
 			if (message.text && parameters && parameters.day) {
 				message.text = message.text.replace(/\$day/g, parameters.day);
 			}
-			console.log(parameters);
 			if (message.text && parameters && parameters.service) {
 				message.text = message.text.replace(/\$service/g, parameters.service);
 			}
@@ -406,6 +410,7 @@ async function makeResponse(response, sessionId = null, parameters) {
 
 	let payload = {
 		id: sessionId ? sessionId : short.generate(),
+		endInteraction: intent.endInteraction,
 		fulfillmentText: messages.length === 1 ? messages[0].text : "",
 		utterance: response.utterance,
 		languageCode: response.localeIso2,
@@ -497,6 +502,13 @@ function verifyAuthentication(req, res) {
 		res.sendStatus(403);
 		return false;
 	}
+}
+
+function capitalizeFirstLetter(string) {
+	if (string && typeof string === "string") {
+		return string.charAt(0).toUpperCase() + string.slice(1);
+	}
+	return string;
 }
 
 module.exports = {

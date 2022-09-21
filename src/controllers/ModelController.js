@@ -49,13 +49,23 @@ class ModelController {
 					console.log(colors.green(`Input contexts: ${JSON.stringify(inputContexts)}`));
 					console.log(colors.green(`Output contexts: ${JSON.stringify(outputContexts)}`));
 
-					newSession = {
-						...newSession,
-						inputContexts: utils.decreaseContexts(utils.updateContexts(inputContexts)),
-						outputContexts: utils.decreaseContexts(utils.updateContexts(outputContexts)),
-						lastIntent: response.intent,
-						parameters: parameters ? parameters : sessionParameters.parameters
-					};
+					if (response.endInteraction) {
+						console.log(colors.green(`End interaction`));
+						newSession = {
+							parameters: [],
+							inputContexts: [],
+							outputContexts: [],
+							parameters: []
+						}
+					} else {
+						newSession = {
+							...newSession,
+							inputContexts: utils.decreaseContexts(utils.updateContexts(inputContexts)),
+							outputContexts: utils.decreaseContexts(utils.updateContexts(outputContexts)),
+							lastIntent: response.intent,
+							parameters: parameters ? parameters : sessionParameters.parameters
+						};
+					}
 
 					client.setex(sessionId, 1440, JSON.stringify(newSession));
 
