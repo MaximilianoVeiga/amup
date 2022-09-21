@@ -72,7 +72,6 @@ async function trainModel(intents) {
 	const entities = generateEntities();
 
 	entities.map((entity) => {
-		console.log(entity);
 		manager.addNamedEntityText(entity.type, entity.name, ["pt"], entity.data);
 	});
 
@@ -213,7 +212,7 @@ async function writeIntent(intent, fileName) {
 	const intentPath = path.join(__dirname, 'agent', 'intents', fileName + ".json");
 	fs.writeFileSync(intentPath, json, "utf8", (err) => {
 		if (err) {
-			console.log(err);
+			console.error(err);
 		}
 	});
 }
@@ -367,8 +366,6 @@ async function makeResponse(response, sessionId = null, parameters) {
 			}
 		}
 
-		console.log(parameters);
-
 		messages.map((message) => {
 			if (message.text && parameters && parameters.first_name) {
 				message.text = message.text.replace(/\$first_name/g, parameters.first_name);
@@ -394,6 +391,7 @@ async function makeResponse(response, sessionId = null, parameters) {
 			if (message.text && parameters && parameters.day) {
 				message.text = message.text.replace(/\$day/g, parameters.day);
 			}
+			console.log(parameters);
 			if (message.text && parameters && parameters.service) {
 				message.text = message.text.replace(/\$service/g, parameters.service);
 			}
@@ -414,6 +412,7 @@ async function makeResponse(response, sessionId = null, parameters) {
 		confidence: response.score,
 		entities: entities,
 		webhook: webhook,
+		parameters: parameters,
 		inputContexts: intentData.inputContexts || [],
 		outputContexts: intentData.outputContexts || [],
 		messages: messages,

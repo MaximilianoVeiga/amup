@@ -36,7 +36,7 @@ class IntentController {
 				}
 			}
 			catch (err) {
-				console.log(err);
+				console.error(err);
 				const payload = {
 					status: "400",
 					errors: err.details.map(e => e.message.replace(/\"/g, ""))
@@ -46,8 +46,42 @@ class IntentController {
 		}
 	}
 
-	// async update(req, res, next) {
-	// }
+	async update(req, res, next) {
+		if (utils.verifyAuthentication(req, res)) {
+			const reqIntent = req.body;
+
+			try {
+				const request = await intentValidator.validateAsync(reqIntent);
+				const intents = await utils.readIntents();
+
+				request.slug = utils.slugify(request.name);
+
+				if (intents.find(i => i.slug === request.slug)) {
+					console.log(`${'[AMUP]'.yellow} Intent already exists`);
+					res.status(409).send({ "status": "409", "message": "Intent already exists" });
+				} else {
+					const intent = new Intent(request);
+
+					if (intent.isValid()) {
+						utils.removeIntent(intent.slug);
+						intents.push(intent);
+						await utils.writeIntent(intent.toJSON(), request.slug);
+						console.log(`${'[AMUP]'.yellow} Intent updated`);
+						res.status(201).send({ "status": "201", "message": "Intent updated" });
+						utils.train();
+					}
+				}
+			}
+			catch (err) {
+				console.error(err);
+				const payload = {
+					status: "400",
+					errors: err.details.map(e => e.message.replace(/\"/g, ""))
+				}
+				await res.status(400).send(payload);
+			}
+		}
+	}
 
 	async destroy(req, res, next) {
 		if (utils.verifyAuthentication(req, res)) {

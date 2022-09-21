@@ -28,14 +28,24 @@ class ModelController {
 
 					const modelName = utils.getContextNameModel(sessionParameters.outputContexts[0]) || "./src/agent/data/model.nlp";
 
+					parameters = {
+						...parameters,
+						...sessionParameters.parameters
+					}
+
 					const response = await utils.detectIntent(intentText, sessionId, modelName, parameters);
+
+					parameters = {
+						...parameters,
+						...response.parameters,
+					}
 
 					let inputContexts = sessionParameters.inputContexts.concat(response.inputContexts);
 					let outputContexts = sessionParameters.outputContexts.concat(response.outputContexts);
 
 					console.log(colors.green(`Session: ${sessionId}`));
 					console.log(colors.green(`Response: ${JSON.stringify(response.messages)}`));
-					console.log(colors.green(`Entities: ${JSON.stringify(response.entities)}`));
+					console.log(colors.green(`Parameters: ${JSON.stringify(parameters)}`));
 					console.log(colors.green(`Input contexts: ${JSON.stringify(inputContexts)}`));
 					console.log(colors.green(`Output contexts: ${JSON.stringify(outputContexts)}`));
 
@@ -65,8 +75,6 @@ class ModelController {
 						inputContexts: inputContexts && inputContexts != [] ? utils.updateContexts(inputContexts) : inputContexts,
 						outputContexts: outputContexts && outputContexts != [] ? utils.updateContexts(response.outputContexts) : outputContexts,
 					}
-
-					console.log(sessionParameters);
 
 					client.setex(sessionId, 1440, JSON.stringify(sessionParameters));
 					console.log(`${'[AMUP]'.yellow} Detected intent correctly`);
