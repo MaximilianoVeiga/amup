@@ -1,8 +1,8 @@
 # Tutorial de Instalação AMUP
 
-## Como instalar o AMUP
+## Introdução
 
-O AMUP é um software livre, você pode instalá-lo no seu computador.
+O AMUP é um software livre de Processamento de Linguagem Natural, você pode instalá-lo no seu computador.
 
 ### Requisitos para Instalação
 
@@ -15,7 +15,7 @@ O AMUP é um software livre, você pode instalá-lo no seu computador.
 
 1. Baixe o [repositorio](https://github.com/MaximilianoVeiga/aurora-nlpjs) no GitHub.
 
-#### Linux
+#### Linux e Windows
 
 Clone o repositório:
 

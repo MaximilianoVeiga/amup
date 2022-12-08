@@ -1,0 +1,233 @@
+{
+	"info": {
+		"_postman_id": "bfc279d8-a4bb-46a1-8a77-6f171a952cad",
+		"name": "AMUP",
+		"description": "O AMUP serviço de Processamento de Linguagem Natural.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8333478"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "signin",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}:{{PORT}}/api/auth/signin",
+							"host": [
+								"{{URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Responsável por gerenciar o controle de sessão da aplicação."
+		},
+		{
+			"name": "Intent",
+			"item": [
+				{
+					"name": "intent",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}:{{PORT}}/api/intent",
+							"host": [
+								"{{URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"intent"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "intent",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Max Intent\",\r\n  \"fallbackIntent\": false,\r\n  \"endInteraction\": false,\r\n  \"priority\": 500000,\r\n  \"utterances\": [\r\n    \"sou o max\"\r\n  ],\r\n  \"inputContexts\": [],\r\n  \"outputContexts\": [],\r\n  \"responses\": [\r\n    {\r\n      \"parameters\": [],\r\n      \"message\": [\r\n        {\r\n          \"type\": \"message\",\r\n          \"plataform\": \"webchat\",\r\n          \"text\": [\r\n            \"Olá, Maximiliano!\"\r\n          ]\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}:{{PORT}}/api/intent",
+							"host": [
+								"{{URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"intent"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "intent/{id}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}:{{PORT}}/api/intent/1",
+							"host": [
+								"{{URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"intent",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "StartFragment\n\nResponsável por gerenciar a criação, obtenção e exclusão das intenções.\n\n### \n\n  \n\nEndFrag"
+		},
+		{
+			"name": "Detect",
+			"item": [
+				{
+					"name": "detectIntent",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/train?sessionId=c1y46aqW2JLE84riJaVSeD",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"train"
+							],
+							"query": [
+								{
+									"key": "sessionId",
+									"value": "c1y46aqW2JLE84riJaVSeD"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Responsável por gerenciar a detecção de intenção"
+		},
+		{
+			"name": "Train",
+			"item": [
+				{
+					"name": "train",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}:{{PORT}}/train",
+							"host": [
+								"{{URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"train"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Responsável por treinar o agente."
+		},
+		{
+			"name": "Health",
+			"item": [
+				{
+					"name": "health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}:{{PORT}}/health",
+							"host": [
+								"{{URL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Responsável por expor o status do funcionamento da aplicação.",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{ACCESS_TOKEN}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}
