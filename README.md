@@ -20,7 +20,7 @@ Currently supporting:
 Clone project
 
 ```console
-git clone github.com/maximilianoveiga/aurora-nlpjs
+git clone github.com/maximilianoveiga/amup
 ```
 
 Install dependencies
