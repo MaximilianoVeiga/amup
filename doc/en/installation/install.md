@@ -1,6 +1,6 @@
 # AMUP Installation Tutorial
 
-# Introduction
+## Introduction
 
 AMUP is free software, you can install it on your computer.
 

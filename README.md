@@ -1,19 +1,19 @@
-# Aurora-NLP ![nodejs](https://img.shields.io/badge/nodejs-v16.8.0-blue) ![code quality](https://img.shields.io/badge/code%20quality-A-green) ![building](https://img.shields.io/badge/building-passing-blue)
+# AMUP [nodejs](https://img.shields.io/badge/nodejs-v16.8.0-blue) ![code quality](https://img.shields.io/badge/code%20quality-A-green) ![building](https://img.shields.io/badge/building-passing-blue)
 
-`aurora-nlpjs` is a project that modifies the entire NLP.js implementation to create conversational contexts. Making it easy to develop and create chatbots that support process, tokenize, categorize intents, and extract text entities in multiple languages. The project supports multiple levels of conversational context through the synthesis of multiple agents.
+`AMUP - Artificial Machine Understanding Plataform` is a project that modifies the entire NLP.js implementation to create conversational contexts. Making it easy to develop and create chatbots that support process, tokenize, categorize intents, and extract text entities in multiple languages. The project supports multiple levels of conversational context through the synthesis of multiple agents.
 
 Currently supporting:
 
--   Guess the language of a phrase
--   Fast Levenshtein distance of two strings
--   Search the best substring of a string with less Levenshtein distance to a given pattern.
--   Get stemmers and tokenizers for several languages.
--   Sentiment Analysis for phrases (with negation support).
--   Named Entity Recognition and management, multi-language support, and acceptance of similar strings, so the introduced text does not need to be exact.
--   Natural Language Processing Classifier, to classify an utterance into intents.
--   NLP Manager: a tool able to manage several languages, the Named Entities for each language, the utterances, and intents for the training of the classifier, and for a given - utterance return the entity extraction, the intent classification and the sentiment analysis. Also, it is able to maintain a Natural Language Generation Manager for the answers.
--   40 languages natively supported.
--   Any other language is supported through tokenization, even fantasy languages
+- Guess the language of a phrase
+- Fast Levenshtein distance of two strings
+- Search the best substring of a string with less Levenshtein distance to a given pattern.
+- Get stemmers and tokenizers for several languages.
+- Sentiment Analysis for phrases (with negation support).
+- Named Entity Recognition and management, multi-language support, and acceptance of similar strings, so the introduced text does not need to be exact.
+- Natural Language Processing Classifier, to classify an utterance into intents.
+- NLP Manager: a tool able to manage several languages, the Named Entities for each language, the utterances, and intents for the training of the classifier, and for a given - utterance return the entity extraction, the intent classification and the sentiment analysis. Also, it is able to maintain a Natural Language Generation Manager for the answers.
+- 40 languages natively supported.
+- Any other language is supported through tokenization, even fantasy languages
 
 ## Installation
 
@@ -33,8 +33,8 @@ npm install
 
 ### Contents
 
--   [Intent](#intent)
--   [Response](#response)
+- [Intent](#intent)
+- [Response](#response)
 
 ### Intent
 
