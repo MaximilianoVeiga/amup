@@ -2,7 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const short = require("short-uuid");
 const directoryPath = path.join(__dirname, "agent/intents");
-const { NlpManager } = require("node-nlp");
+const { NlpManager } = require("@horizon-rs/node-nlp");
 const axios = require("axios");
 
 async function removeMarkdown(text) {
@@ -28,13 +28,13 @@ async function detectIntent(
     }
 
     console.log(`${"[AMUP]".yellow} Bot is detecting intent`);
-    const manager = new NlpManager({ languages: ["pt"], forceNER: true });
+    const manager = new NlpManager({ languages: ["br"], forceNER: true });
 
     manager.load(model);
 
     const input = await removeMarkdown(query);
 
-    const nluResponse = await manager.process("pt", input);
+    const nluResponse = await manager.process("br", input);
     const response = makeResponse(nluResponse, sessionId, parameters);
 
     return response;
@@ -58,7 +58,7 @@ async function verifyModel(modelName) {
 }
 
 async function trainModel(intents) {
-    const manager = new NlpManager({ languages: ["pt"], forceNER: true });
+    const manager = new NlpManager({ languages: ["br"], forceNER: true });
 
     const groupedIntents = groupIntentsByContext(intents);
 
@@ -67,13 +67,13 @@ async function trainModel(intents) {
     for (const context in groupedIntents) {
         const groupIntents = groupedIntents[context];
         const contextManager = new NlpManager({
-            languages: ["pt"],
+            languages: ["br"],
             forceNER: true,
         });
 
         groupIntents.intents.map((groupIntent) => {
             groupIntent.utterances.map((phrase) => {
-                contextManager.addDocument("pt", phrase, groupIntent.slug);
+                contextManager.addDocument("br", phrase, groupIntent.slug);
             });
 
             addResponses(groupIntent, groupIntent.slug, contextManager);
@@ -91,7 +91,7 @@ async function trainModel(intents) {
         manager.addNamedEntityText(
             entity.type,
             entity.name,
-            ["pt"],
+            ["br"],
             entity.data
         );
     });
@@ -103,11 +103,11 @@ async function trainModel(intents) {
 
         if (intentContext.length === 0) {
             if (intentDomain) {
-                manager.assignDomain("pt", intentSlug, intentDomain);
+                manager.assignDomain("br", intentSlug, intentDomain);
             }
 
             intent.utterances.map((phrase) => {
-                manager.addDocument("pt", phrase, intentSlug);
+                manager.addDocument("br", phrase, intentSlug);
             });
 
             if (intent.entities) {
@@ -115,7 +115,7 @@ async function trainModel(intents) {
                     manager.addNamedEntityText(
                         entity.type,
                         entity.name,
-                        ["pt"],
+                        ["br"],
                         entity.phrases
                     );
                 });
@@ -317,10 +317,10 @@ async function addResponses(intent, intentSlug, manager) {
             if (message.type != "suggestions") {
                 if (message.text.length > 0) {
                     for (const text of message.text) {
-                        manager.addAnswer("pt", intentSlug, text);
+                        manager.addAnswer("br", intentSlug, text);
                     }
                 } else {
-                    manager.addAnswer("pt", intentSlug, message.text[0]);
+                    manager.addAnswer("br", intentSlug, message.text[0]);
                 }
             }
         });
