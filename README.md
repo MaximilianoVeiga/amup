@@ -4,16 +4,16 @@
 
 Currently supporting:
 
-- Guess the language of a phrase
-- Fast Levenshtein distance of two strings
-- Search the best substring of a string with less Levenshtein distance to a given pattern.
-- Get stemmers and tokenizers for several languages.
-- Sentiment Analysis for phrases (with negation support).
-- Named Entity Recognition and management, multi-language support, and acceptance of similar strings, so the introduced text does not need to be exact.
-- Natural Language Processing Classifier, to classify an utterance into intents.
-- NLP Manager: a tool able to manage several languages, the Named Entities for each language, the utterances, and intents for the training of the classifier, and for a given - utterance return the entity extraction, the intent classification and the sentiment analysis. Also, it is able to maintain a Natural Language Generation Manager for the answers.
-- 40 languages natively supported.
-- Any other language is supported through tokenization, even fantasy languages
+-   Guess the language of a phrase
+-   Fast Levenshtein distance of two strings
+-   Search the best substring of a string with less Levenshtein distance to a given pattern.
+-   Get stemmers and tokenizers for several languages.
+-   Sentiment Analysis for phrases (with negation support).
+-   Named Entity Recognition and management, multi-language support, and acceptance of similar strings, so the introduced text does not need to be exact.
+-   Natural Language Processing Classifier, to classify an utterance into intents.
+-   NLP Manager: a tool able to manage several languages, the Named Entities for each language, the utterances, and intents for the training of the classifier, and for a given - utterance return the entity extraction, the intent classification and the sentiment analysis. Also, it is able to maintain a Natural Language Generation Manager for the answers.
+-   40 languages natively supported.
+-   Any other language is supported through tokenization, even fantasy languages
 
 ## Installation
 
@@ -33,29 +33,41 @@ npm install
 
 ### Contents
 
-- [Intent](#intent)
-- [Response](#response)
+-   [Intent](#intent)
+-   [Response](#response)
 
 ### Intent
 
 ```json
 {
+    "id": "QzsqN5RrljKxCdyBq1iacz",
     "name": "Welcome Intent",
     "slug": "welcome",
-    "action": "welcome",
+    "webhookUsed": false,
     "fallbackIntent": false,
     "endInteraction": false,
     "priority": 500000,
-    "context": "",
-    "utterances": ["Olá", "Oi", "Eai", "Diga"],
+    "utterances": [
+        "Olá",
+        "Oi",
+        "Eaí",
+        "Eae",
+        "Bom dia",
+        "Boa tarde",
+        "Boa noite"
+    ],
+    "inputContexts": [],
+    "outputContexts": [],
     "responses": [
         {
             "parameters": [],
             "message": [
                 {
                     "type": "message",
-                    "plataform": "telegram",
-                    "text": ["Oi, como você está?", "Olá, como você esta?"]
+                    "platform": "telegram",
+                    "text": [
+                        "Olá, $name! Seja bem-vindo(a) ao chatbot! Como posso te ajudar hoje?"
+                    ]
                 }
             ]
         }
@@ -79,31 +91,36 @@ Session is optional, if passed it is used by the project to determine conversati
 
 ```json
 {
-    "id": "gfp5t6FUa6XEQYaPFAKe4a",
-    "fulfillmentText": "Oi, como você está?",
-    "utterance": "olá, tudo bem?",
-    "languageCode": "pt",
+    "id": "oSU8T5Hsp6oH8JMdiDMEVN",
+    "endInteraction": false,
+    "fulfillmentText": "Olá, Max! Seja bem-vindo(a) ao chatbot! Como posso te ajudar hoje?",
+    "utterance": "Olá!",
+    "languageCode": "br",
     "confidence": 1,
     "entities": [],
     "webhook": {
         "webhookUsed": false
     },
+    "parameters": {},
+    "inputContexts": [],
+    "outputContexts": [],
     "messages": [
         {
-            "text": "Oi, como você está?"
+            "text": "Olá, Max! Seja bem-vindo(a) ao chatbot! Como posso te ajudar hoje?"
         }
     ],
     "sentimentAnalysisResult": {
         "queryTextSentiment": {
-            "score": 3,
+            "score": 0,
             "type": "afinn",
-            "vote": "positive"
+            "vote": "neutral"
         }
     },
     "intent": {
         "isFallback": false,
         "displayName": "Welcome Intent",
-        "id": "fGCUztXn1WMDNkN6i4gqVA"
+        "endInteraction": false,
+        "id": "rDXkEvyke4rDLg15dbyFdy"
     }
 }
 ```
