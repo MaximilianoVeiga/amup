@@ -6,6 +6,6 @@
     "parserOptions": {
         "ecmaVersion": "latest"
     },
-    "rules": {
-    }
+    "rules": {}
 }
+
