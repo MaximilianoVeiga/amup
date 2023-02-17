@@ -57,7 +57,9 @@ class ModelController {
                         );
 
                     console.log(colors.green(`Session: ${sessionId}`));
-                    console.log(colors.green(`Intent: ${response.intent}`));
+                    console.log(
+                        colors.green(`Intent: ${response.intent.displayName}`)
+                    );
                     console.log(colors.green(`Input: ${intentText}`));
                     console.log(
                         colors.green(

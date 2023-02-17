@@ -521,50 +521,13 @@ async function makeResponse(response, sessionId = null, parameters) {
         }
 
         messages.map((message) => {
-            if (message.text && parameters && parameters.first_name) {
-                message.text = message.text.replace(
-                    /\$first_name/g,
-                    parameters.first_name
-                );
-            }
-            if (message.text && parameters && parameters.last_name) {
-                message.text = message.text.replace(
-                    /\$last_name/g,
-                    parameters.last_name
-                );
-            }
-            if (message.text && parameters && parameters.email) {
-                message.text = message.text.replace(
-                    /\$email/g,
-                    parameters.email
-                );
-            }
-            if (message.text && parameters && parameters.phone) {
-                message.text = message.text.replace(
-                    /\$phone/g,
-                    parameters.phone
-                );
-            }
-            if (message.text && parameters && parameters.address) {
-                message.text = message.text.replace(
-                    /\$address/g,
-                    parameters.address
-                );
-            }
-            if (message.text && parameters && parameters.time) {
-                message.text = message.text.replace(/\$time/g, parameters.time);
-            }
-            if (message.text && parameters && parameters.date) {
-                message.text = message.text.replace(/\$date/g, parameters.date);
-            }
-            if (message.text && parameters && parameters.day) {
-                message.text = message.text.replace(/\$day/g, parameters.day);
-            }
-            if (message.text && parameters && parameters.service) {
-                message.text = message.text.replace(
-                    /\$service/g,
-                    parameters.service
-                );
+            if (message.text && parameters) {
+                for (const [key, value] of Object.entries(parameters)) {
+                    message.text = message.text.replace(
+                        new RegExp(`\\$${key}`, "g"),
+                        value
+                    );
+                }
             }
         });
     });
