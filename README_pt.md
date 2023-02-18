@@ -4,16 +4,16 @@
 
 Atualmente apoiando:
 
-- Adivinhe o idioma de uma frase
-- Distância levenshtein rápida de duas cordas
-- Pesquise a melhor substring de uma string com menos distância de Levenshtein para um determinado padrão.
-- Obtenha lematizadores e tokenizadores para vários idiomas.
-- Análise de sentimento para frases (com suporte de negação).
-- Reconhecimento e gerenciamento de entidades nomeadas, suporte a vários idiomas e aceitação de strings semelhantes, portanto, o texto introduzido não precisa ser exato.
-- Classificador de processamento de linguagem natural, para classificar um enunciado em intenções.
-- NLP Manager: uma ferramenta capaz de gerenciar vários idiomas, as Entidades Nomeadas para cada idioma, os enunciados e intenções para o treinamento do classificador e, para um determinado enunciado, retornar a extração da entidade, a classificação da intenção e a análise do sentimento. Além disso, é capaz de manter um Gerenciador de Geração de Linguagem Natural para as respostas.
-- 40 idiomas suportados nativamente.
-- Qualquer outro idioma é suportado por tokenização, mesmo idiomas de fantasia
+-   Adivinhe o idioma de uma frase
+-   Distância levenshtein rápida de duas cordas
+-   Pesquise a melhor substring de uma string com menos distância de Levenshtein para um determinado padrão.
+-   Obtenha lematizadores e tokenizadores para vários idiomas.
+-   Análise de sentimento para frases (com suporte de negação).
+-   Reconhecimento e gerenciamento de entidades nomeadas, suporte a vários idiomas e aceitação de strings semelhantes, portanto, o texto introduzido não precisa ser exato.
+-   Classificador de processamento de linguagem natural, para classificar um enunciado em intenções.
+-   NLP Manager: uma ferramenta capaz de gerenciar vários idiomas, as Entidades Nomeadas para cada idioma, os enunciados e intenções para o treinamento do classificador e, para um determinado enunciado, retornar a extração da entidade, a classificação da intenção e a análise do sentimento. Além disso, é capaz de manter um Gerenciador de Geração de Linguagem Natural para as respostas.
+-   40 idiomas suportados nativamente.
+-   Qualquer outro idioma é suportado por tokenização, mesmo idiomas de fantasia
 
 ## Instalação
 
@@ -33,33 +33,45 @@ npm install
 
 ### Conteúdo
 
-- [Intenção](#intenção)
-- [Resposta](#resposta)
+-   [Intenção](#intenção)
+-   [Resposta](#resposta)
 
 ### Intenção
 
 ```json
 {
-     "name": "Intenção de boas-vindas",
-     "slug": "bem-vindo",
-     "ação": "bem-vindo",
-     "fallbackIntent": falso,
-     "endInteraction": falso,
-     "prioridade": 500000,
-     "contexto": "",
-     "enunciados": ["Olá", "Oi", "Eai", "Diga"],
-     "respostas": [
-         {
-             "parâmetros": [],
-             "mensagem": [
-                 {
-                     "tipo": "mensagem",
-                     "plataforma": "telegrama",
-                     "text": ["Oi, como você está?", "Olá, como você está?"]
-                 }
-             ]
-         }
-     ]
+    "id": "QzsqN5RrljKxCdyBq1iacz",
+    "name": "Welcome Intent",
+    "slug": "welcome",
+    "webhookUsed": false,
+    "fallbackIntent": false,
+    "endInteraction": false,
+    "priority": 500000,
+    "utterances": [
+        "Olá",
+        "Oi",
+        "Eaí",
+        "Eae",
+        "Bom dia",
+        "Boa tarde",
+        "Boa noite"
+    ],
+    "inputContexts": [],
+    "outputContexts": [],
+    "responses": [
+        {
+            "parameters": [],
+            "message": [
+                {
+                    "type": "message",
+                    "platform": "telegram",
+                    "text": [
+                        "Olá, $name! Seja bem-vindo(a) ao chatbot! Como posso te ajudar hoje?"
+                    ]
+                }
+            ]
+        }
+    ]
 }
 ```
 
@@ -79,31 +91,36 @@ A sessão é opcional, se informada, é usada pelo projeto para determinar o est
 
 ```json
 {
-     "id": "gfp5t6FUa6XEQYaPFAKe4a",
-     "fulfillmentText": "Oi, como você está?",
-     "utterance": "olá, tudo bem?",
-     "idiomaCódigo": "pt",
-     "confiança": 1,
-     "entidades": [],
-     "webhook": {
-         "webhookUsed": falso
-     },
-     "mensagens": [
-         {
-             "text": "Oi, como você está?"
-         }
-     ],
-     "sentimentAnalysisResult": {
-         "queryTextSentiment": {
-             "pontuação": 3,
-             "tipo": "afinn",
-             "voto": "positivo"
-         }
-     },
-     "intenção": {
-         "isFallback": falso,
-         "displayName": "Intenção de boas-vindas",
-         "id": "fGCUztXn1WMDNkN6i4gqVA"
-     }
+    "id": "oSU8T5Hsp6oH8JMdiDMEVN",
+    "endInteraction": false,
+    "fulfillmentText": "Olá, Max! Seja bem-vindo(a) ao chatbot! Como posso te ajudar hoje?",
+    "utterance": "Olá!",
+    "languageCode": "br",
+    "confidence": 1,
+    "entities": [],
+    "webhook": {
+        "webhookUsed": false
+    },
+    "parameters": {},
+    "inputContexts": [],
+    "outputContexts": [],
+    "messages": [
+        {
+            "text": "Olá, Max! Seja bem-vindo(a) ao chatbot! Como posso te ajudar hoje?"
+        }
+    ],
+    "sentimentAnalysisResult": {
+        "queryTextSentiment": {
+            "score": 0,
+            "type": "afinn",
+            "vote": "neutral"
+        }
+    },
+    "intent": {
+        "isFallback": false,
+        "displayName": "Welcome Intent",
+        "endInteraction": false,
+        "id": "rDXkEvyke4rDLg15dbyFdy"
+    }
 }
 ```
