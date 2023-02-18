@@ -1,9 +1,9 @@
 class Context {
     static getName(context) {
-        let path = "./src/agent/data/model.nlp";
+        let path = "model.nlp";
         if (context && context.name) {
             const contextName = context.name;
-            path = `./src/agent/data/model-${contextName}.nlp`;
+            path = `model-${contextName}.nlp`;
         }
         return path;
     }

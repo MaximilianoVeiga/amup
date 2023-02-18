@@ -21,10 +21,9 @@ class File {
     }
 
     static removeModel(modelName = "model.nlp") {
-        const intentPath = path.join(modelDir, modelName);
-
-        if (fs.existsSync(intentPath)) {
-            fs.unlinkSync(intentPath);
+        const modelPath = path.join(modelDir, modelName);
+        if (fs.existsSync(modelPath)) {
+            fs.unlinkSync(modelPath);
         }
     }
 
@@ -55,15 +54,17 @@ class File {
     }
 
     static createDataFolder() {
-        if (!fs.existsSync("./src/agent/data")) {
-            fs.mkdirSync("./src/agent/data");
+        if (!fs.existsSync(modelDir)) {
+            fs.mkdirSync(modelDir);
             return true;
         }
         return false;
     }
 
     static async verifyModel(modelName) {
-        if (fs.existsSync(modelName)) {
+        const modelPath = path.join(modelDir, modelName);
+
+        if (fs.existsSync(modelPath)) {
             return true;
         }
         return false;

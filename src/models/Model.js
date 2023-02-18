@@ -1,19 +1,23 @@
 const short = require("short-uuid");
+
 const File = require("../models/File");
 const Text = require("../models/Text");
 const Context = require("../models/Context");
-const utils = require("../utils");
 
 const { NlpManager } = require("@horizon-rs/node-nlp");
 const Entity = require("./Entity");
 
 const language = process.env.LANGUAGE || "br";
+const nlu_log = process.env.NLU_LOG || false;
+
+const utils = require("../utils");
 
 class Model {
     static async trainModel(intents) {
         const manager = new NlpManager({
             languages: [language],
             forceNER: true,
+            nlu: { log: nlu_log },
         });
         const intentsByContext = Context.groupIntents(intents);
 
@@ -21,6 +25,7 @@ class Model {
             const contextManager = new NlpManager({
                 languages: [language],
                 forceNER: true,
+                nlu: { log: nlu_log },
             });
 
             const intentsInContext = intentsByContext[context].intents;
@@ -76,7 +81,6 @@ class Model {
             }
         }
 
-        File.removeModel();
         await Model.save(manager, "model.nlp");
     }
 
@@ -105,28 +109,29 @@ class Model {
     static async detect(
         query,
         sessionId = null,
-        model = "./src/agent/data/model.nlp",
+        model = "model.nlp",
         parameters
     ) {
         const modelIsValid = await File.verifyModel(model);
 
         if (!modelIsValid) {
-            console.log(`${"[AMUP]".yellow} Bot is training`);
-
             await Model.trainModel(await File.readIntents());
-
-            setTimeout(() => {
-                console.log(`${"[AMUP]".yellow} Bot is trained sucessfully`);
-            }, 100);
         }
 
         console.log(`${"[AMUP]".yellow} Bot is detecting intent`);
+
         const manager = new NlpManager({
             languages: [language],
             forceNER: true,
         });
 
-        manager.load(model);
+        try {
+            manager.load(model);
+        } catch (error) {
+            console.log(`${"[AMUP]".yellow} Bot is not loaded`);
+
+            throw error;
+        }
 
         const input = await Text.removeMarkdown(query);
 
@@ -144,15 +149,22 @@ class Model {
             console.error(`${"[AMUP]".yellow} Bot is trained sucessfully`);
         } catch (error) {
             console.error(`${"[AMUP]".yellow} Bot is not trained`);
+            console.log(error);
         }
     }
 
     static async save(manager, modelName) {
-        await manager.train();
-
         const fileName = File.getModel(modelName);
 
-        manager.save(fileName);
+        File.removeModel(modelName);
+
+        try {
+            await manager.save(fileName);
+        } catch (error) {
+            console.log(`${"[AMUP]".yellow} Bot is not saved`);
+
+            throw error;
+        }
     }
 
     static async makeResponse(response, sessionId = null, parameters) {

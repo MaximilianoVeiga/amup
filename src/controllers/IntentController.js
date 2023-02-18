@@ -35,7 +35,7 @@ class IntentController {
 
                     const modelName =
                         Context.getName(sessionParameters.outputContexts[0]) ||
-                        "./src/agent/data/model.nlp";
+                        "model.nlp";
 
                     parameters = {
                         ...parameters,
@@ -103,7 +103,7 @@ class IntentController {
                     const response = await Model.detect(
                         intentText,
                         sessionId,
-                        "./src/agent/data/model.nlp",
+                        "model.nlp",
                         parameters
                     );
 
