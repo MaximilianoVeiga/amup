@@ -9,7 +9,6 @@ const intentValidator = Joi.object({
         .items(
             Joi.object({
                 name: Joi.string().required(),
-                lifespanCount: Joi.number().required(),
             })
         )
         .required(),

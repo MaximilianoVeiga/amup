@@ -1,7 +1,7 @@
 {
     "name": "amup",
-    "version": "1.1.1",
-    "description": "Artificial Machine Understanding Platform",
+    "version": "2.0.0",
+    "description": "AMUP - Artificial Machine Understanding Platform",
     "main": "src/index.js",
     "scripts": {
         "start": "node src/index.js",

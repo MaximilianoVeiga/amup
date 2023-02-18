@@ -1,3 +1,5 @@
+const colors = require("colors");
+
 const short = require("short-uuid");
 
 class Intent {
@@ -42,6 +44,30 @@ class Intent {
             outputContexts: this.outputContexts,
             responses: this.responses,
         };
+    }
+
+    static logData(
+        sessionId,
+        intentDisplayName,
+        intentText,
+        responseMessages,
+        parameters,
+        inputContexts,
+        outputContexts
+    ) {
+        console.log(colors.green(`Session: ${sessionId}`));
+        console.log(colors.green(`Intent: ${intentDisplayName}`));
+        console.log(colors.green(`Input: ${intentText}`));
+        console.log(
+            colors.green(`Response: ${JSON.stringify(responseMessages)}`)
+        );
+        console.log(colors.green(`Parameters: ${JSON.stringify(parameters)}`));
+        console.log(
+            colors.green(`Input contexts: ${JSON.stringify(inputContexts)}`)
+        );
+        console.log(
+            colors.green(`Output contexts: ${JSON.stringify(outputContexts)}`)
+        );
     }
 }
 
