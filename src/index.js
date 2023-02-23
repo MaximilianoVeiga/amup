@@ -6,9 +6,11 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 
-const trainOnStart = process.env.TRAIN_ON_START || false;
+const Environment = require("./models/Environment");
 
-if (trainOnStart) {
+const trainOnStartup = Environment.getTrainOnStartup();
+
+if (trainOnStartup) {
     const Model = require("./models/Model");
     Model.train();
 }

@@ -1,3 +1,4 @@
+const Environment = require("../models/Environment");
 class Auth {
     constructor(auth) {
         this.username = auth.username;
@@ -16,7 +17,7 @@ class Auth {
             const bearer = bearerHeader.split(" ");
             const bearerToken = bearer[1];
 
-            if (bearerToken === process.env.AUTH_TOKEN) {
+            if (bearerToken === Environment.getAuthToken()) {
                 return true;
             } else {
                 res.status(403).send({

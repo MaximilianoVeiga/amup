@@ -1,3 +1,4 @@
+const Environment = require("../models/Environment");
 class AuthController {
     async signin(req, res) {
         const { username, password } = req.body;
@@ -24,8 +25,8 @@ class AuthController {
             });
         } else {
             if (
-                username === process.env.user &&
-                password === process.env.pass
+                username === Environment.getUsername() &&
+                password === Environment.getPassword()
             ) {
                 const token = process.env.AUTH_TOKEN;
 

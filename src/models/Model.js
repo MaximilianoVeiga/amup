@@ -1,14 +1,16 @@
+const colors = require("colors");
+
 const short = require("short-uuid");
 
 const File = require("../models/File");
 const Text = require("../models/Text");
 const Context = require("../models/Context");
+const Entity = require("../models/Entity");
+const Environment = require("../models/Environment");
 
 const { NlpManager } = require("@horizon-rs/node-nlp");
-const Entity = require("./Entity");
 
-const language = process.env.LANGUAGE || "br";
-const nlu_log = process.env.NLU_LOG || false;
+const language = Environment.getLanguage();
 
 const utils = require("../utils");
 
@@ -17,15 +19,18 @@ class Model {
         const manager = new NlpManager({
             languages: [language],
             forceNER: true,
-            nlu: { log: nlu_log },
+            nlu: { log: false },
+            autoSave: true,
         });
+
         const intentsByContext = Context.groupIntents(intents);
 
         for (const context in intentsByContext) {
             const contextManager = new NlpManager({
                 languages: [language],
                 forceNER: true,
-                nlu: { log: nlu_log },
+                nlu: { log: false },
+                autoSave: true,
             });
 
             const intentsInContext = intentsByContext[context].intents;
@@ -112,6 +117,8 @@ class Model {
         model = "model.nlp",
         parameters
     ) {
+        const modelPath = File.getModel(model);
+
         const modelIsValid = await File.verifyModel(model);
 
         if (!modelIsValid) {
@@ -123,22 +130,27 @@ class Model {
         const manager = new NlpManager({
             languages: [language],
             forceNER: true,
+            nlu: { log: false },
         });
 
         try {
-            manager.load(model);
+            manager.load(modelPath);
+
+            const input = await Text.removeMarkdown(query);
+
+            const nluResponse = await manager.process(language, input);
+            const response = Model.makeResponse(
+                nluResponse,
+                sessionId,
+                parameters
+            );
+
+            return response;
         } catch (error) {
             console.log(`${"[AMUP]".yellow} Bot is not loaded`);
 
             throw error;
         }
-
-        const input = await Text.removeMarkdown(query);
-
-        const nluResponse = await manager.process(language, input);
-        const response = Model.makeResponse(nluResponse, sessionId, parameters);
-
-        return response;
     }
 
     static async train() {
@@ -159,7 +171,9 @@ class Model {
         File.removeModel(modelName);
 
         try {
+            await manager.train();
             await manager.save(fileName);
+            File.removeBaseModel();
         } catch (error) {
             console.log(`${"[AMUP]".yellow} Bot is not saved`);
 
