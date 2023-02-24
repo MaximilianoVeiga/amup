@@ -9,7 +9,7 @@ ENV URL=localhost
 ENV PORT=3000
 ENV USERNAME=admin
 ENV PASSWORD=admin
-ENV AUTH_TOKEN=JY9qTIKwPzWftbRUdeFZjMGH6GflG9utuj8PEdajyJEZNXivANC11qqRbVRD
+ENV AUTH_TOKEN=example
 
 # Copy over source code
 COPY . .
