@@ -3,4 +3,4 @@
 /data/*.nlp
 .env
 dump.rdb
-model.nlp
+*.nlp

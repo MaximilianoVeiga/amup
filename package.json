@@ -1,39 +1,40 @@
 {
-  "name": "amup",
-  "version": "1.0.0",
-  "description": "Artificial Machine Understanding Platform",
-  "main": "src/index.js",
-  "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
-    "dev-tunnel": "npx ngrok http 3000 > /dev/null & 2>&1 & nodemon src/index.js"
-  },
-  "keywords": [],
-  "author": "Maximiliano Veiga",
-  "license": "CCSA40",
-  "dependencies": {
-    "axios": "^0.23.0",
-    "body-parser": "^1.19.2",
-    "colors": "^1.4.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.0",
-    "express": "^4.17.1",
-    "express-validation": "^4.1.0",
-    "joi": "^17.6.0",
-    "jsonwebtoken": "^8.5.1",
-    "node-nlp": "^4.22.1",
-    "redis": "^3.1.2",
-    "short-uuid": "^4.2.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.19"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/MaximilianoVeiga/aurora-nlpjs.git"
-  },
-  "bugs": {
-    "url": "https://github.com/MaximilianoVeiga/aurora-nlpjs/issues"
-  },
-  "homepage": "https://github.com/MaximilianoVeiga/aurora-nlpjs#readme"
+    "name": "amup",
+    "version": "2.0.0",
+    "description": "AMUP - Artificial Machine Understanding Platform",
+    "main": "src/index.js",
+    "scripts": {
+        "start": "node src/index.js",
+        "dev": "nodemon src/index.js"
+    },
+    "keywords": [],
+    "author": "Maximiliano Veiga",
+    "license": "APACHE-2.0",
+    "dependencies": {
+        "@horizon-rs/node-nlp": "^4.26.1",
+        "axios": "^0.23.0",
+        "body-parser": "^1.19.2",
+        "colors": "^1.4.0",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.0",
+        "express": "^4.17.1",
+        "express-validation": "^4.1.0",
+        "joi": "^17.6.0",
+        "jsonwebtoken": "^8.5.1",
+        "node-nlp": "^4.22.1",
+        "redis": "^3.1.2",
+        "short-uuid": "^4.2.0"
+    },
+    "devDependencies": {
+        "eslint": "^8.21.0",
+        "nodemon": "^2.0.19"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/MaximilianoVeiga/aurora-nlpjs.git"
+    },
+    "bugs": {
+        "url": "https://github.com/MaximilianoVeiga/aurora-nlpjs/issues"
+    },
+    "homepage": "https://github.com/MaximilianoVeiga/aurora-nlpjs#readme"
 }

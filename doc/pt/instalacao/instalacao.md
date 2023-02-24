@@ -1,8 +1,8 @@
 # Tutorial de Instalação AMUP
 
-## Como instalar o AMUP
+## Introdução
 
-O AMUP é um software livre, você pode instalá-lo no seu computador.
+O AMUP é um software livre de Processamento de Linguagem Natural, você pode instalá-lo no seu computador.
 
 ### Requisitos para Instalação
 
@@ -15,8 +15,7 @@ O AMUP é um software livre, você pode instalá-lo no seu computador.
 
 1. Baixe o [repositorio](https://github.com/MaximilianoVeiga/aurora-nlpjs) no GitHub.
 
-
-#### Linux
+#### Linux e Windows
 
 Clone o repositório:
 
@@ -39,7 +38,7 @@ docker run -d --name amup-redis --network horizon-network -p 6379:6379 redis
 Utilizando o Docker, crie um container para o AMUP Core.
 
 ```bash
-docker run -d --name amup-core --network horizon-network -p 3000:3000 thehorizondev/amup:0.0.5
+docker run -d --name amup-core --network horizon-network -p 3000:3000 thehorizondev/amup:0.0.6
 ```
 
 Pronto! O AMUP está instalado e funcionando.
