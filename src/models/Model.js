@@ -206,7 +206,10 @@ class Model {
         entities.map(entity => {
             if (entity.entityType === "time") {
                 newEntitiesCreated[entity.entityType] = entity.source;
-            } else if (entity.entityType !== "boolean") {
+            } else if (
+                entity.entityType !== "boolean" &&
+                entity.entityType !== "hashtag"
+            ) {
                 newEntitiesCreated[entity.entityType] = capitalizeFirstLetter(
                     entity.value
                 );
