@@ -39,7 +39,6 @@ export default class File {
 
     static async removeIntent(fileName) {
         const intentPath = path.join(intentDir, fileName + ".json");
-        console.log(intentPath);
         if (fs.existsSync(intentPath)) {
             fs.unlink(intentPath, err => {
                 if (err) throw err;

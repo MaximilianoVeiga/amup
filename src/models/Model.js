@@ -44,7 +44,7 @@ export default class Model {
             await Model.save(contextManager, `model-${context}.nlp`);
         }
 
-        const entities = Entity.generate();
+        const entities = Entity.seed();
 
         for (const entity of entities) {
             manager.addNamedEntityText(
@@ -161,7 +161,7 @@ export default class Model {
         } catch (error) {
             Text.logMessage("Bot is not trained");
 
-            console.log(error);
+            Text.logError(error);
         }
     }
 
@@ -217,8 +217,6 @@ export default class Model {
             ...parameters,
             ...newEntitiesCreated,
         };
-
-        console.log(intentData);
 
         const intent = {
             isFallback: response.intent === "None" ? true : false,

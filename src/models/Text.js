@@ -37,31 +37,21 @@ export default class Text {
         inputContexts,
         outputContexts
     ) {
-        console.log(
-            chalk.greenBright(`Session: `) + chalk.yellow(`${sessionId}`)
-        );
-        console.log(
-            chalk.greenBright(`Intent: `) + chalk.yellow(`${intentDisplayName}`)
-        );
-        console.log(
-            chalk.greenBright(`Input: `) + chalk.yellow(`${intentText}`)
-        );
-        console.log(
-            chalk.greenBright(`Response: `) +
-                chalk.yellow(`${JSON.stringify(responseMessages)}`)
-        );
-        console.log(
-            chalk.greenBright(`Parameters: `) +
-                chalk.yellow(`${JSON.stringify(parameters)}`)
-        );
-        console.log(
-            chalk.greenBright(`Input contexts: `) +
-                chalk.yellow(`${JSON.stringify(inputContexts)}`)
-        );
-        console.log(
-            chalk.greenBright(`Output contexts: `) +
-                chalk.yellow(`${JSON.stringify(outputContexts)}`)
-        );
+        this.logField("Session", sessionId);
+        this.logField("Intent", intentDisplayName);
+        this.logField("Input", intentText);
+        this.logField("Response", JSON.stringify(responseMessages));
+        this.logField("Parameters", JSON.stringify(parameters));
+        this.logField("Input contexts", JSON.stringify(inputContexts));
+        this.logField("Output contexts", JSON.stringify(outputContexts));
+    }
+
+    static logField(field, value) {
+        console.log(chalk.greenBright(`${field}: `) + chalk.yellow(`${value}`));
+    }
+
+    static logError(error) {
+        console.log(chalk.yellow(`[AMUP] `) + chalk.red(`${error}`));
     }
 
     static formatName(name) {

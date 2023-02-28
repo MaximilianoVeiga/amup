@@ -4,11 +4,17 @@ const router = express.Router();
 
 import IntentController from "../controllers/IntentController.js";
 import ModelController from "../controllers/ModelController.js";
+import AuthMiddleware from "../middleware/AuthMiddleware.js";
 
+const authMiddleware = new AuthMiddleware();
 const intentController = new IntentController();
 const modelController = new ModelController();
 
-router.get("/detectIntent", intentController.detect);
-router.get("/train", modelController.train);
+router.get(
+    "/detectIntent",
+    authMiddleware.validateAuthToken,
+    intentController.detect
+);
+router.get("/train", authMiddleware.validateAuthToken, modelController.train);
 
 export default router;
