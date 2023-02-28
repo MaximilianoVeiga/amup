@@ -1,4 +1,6 @@
-class Text {
+import chalk from "chalk";
+
+export default class Text {
     static async removeMarkdown(text) {
         return text.replace(/(\*|_|`)/g, "");
     }
@@ -21,6 +23,60 @@ class Text {
         }
         return text;
     }
-}
 
-module.exports = Text;
+    static logMessage(message) {
+        console.log(chalk.yellow(`[AMUP] `) + `${message}`);
+    }
+
+    static logData(
+        sessionId,
+        intentDisplayName,
+        intentText,
+        responseMessages,
+        parameters,
+        inputContexts,
+        outputContexts
+    ) {
+        console.log(
+            chalk.greenBright(`Session: `) + chalk.yellow(`${sessionId}`)
+        );
+        console.log(
+            chalk.greenBright(`Intent: `) + chalk.yellow(`${intentDisplayName}`)
+        );
+        console.log(
+            chalk.greenBright(`Input: `) + chalk.yellow(`${intentText}`)
+        );
+        console.log(
+            chalk.greenBright(`Response: `) +
+                chalk.yellow(`${JSON.stringify(responseMessages)}`)
+        );
+        console.log(
+            chalk.greenBright(`Parameters: `) +
+                chalk.yellow(`${JSON.stringify(parameters)}`)
+        );
+        console.log(
+            chalk.greenBright(`Input contexts: `) +
+                chalk.yellow(`${JSON.stringify(inputContexts)}`)
+        );
+        console.log(
+            chalk.greenBright(`Output contexts: `) +
+                chalk.yellow(`${JSON.stringify(outputContexts)}`)
+        );
+    }
+
+    static formatName(name) {
+        if (name && typeof name === "string") {
+            if (name.includes(".")) {
+                name = name.replace(/\./g, " ");
+                name = name.replace(/(?:^|\s)\S/g, function (a) {
+                    return a.toUpperCase();
+                });
+                return name;
+            } else {
+                return name;
+            }
+        } else {
+            return name;
+        }
+    }
+}

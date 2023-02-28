@@ -1,11 +1,14 @@
-const express = require("express");
+import express from "express";
+
 const router = express.Router();
 
-const IntentController = require("../controllers/IntentController");
+import IntentController from "../controllers/IntentController.js";
 
-router.get("/intent", IntentController.index);
-router.post("/intent", IntentController.create);
-router.put("/intent/:id", IntentController.update);
-router.delete("/intent/:id", IntentController.destroy);
+const intentController = new IntentController();
 
-module.exports = router;
+router.get("/intent", intentController.index);
+router.post("/intent", intentController.create);
+router.put("/intent/:id", intentController.update);
+router.delete("/intent/:id", intentController.destroy);
+
+export default router;

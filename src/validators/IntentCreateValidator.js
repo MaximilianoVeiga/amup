@@ -1,4 +1,4 @@
-const { Joi } = require("express-validation");
+import { Joi } from "express-validation";
 
 const intentValidator = Joi.object({
     name: Joi.string().required(),
@@ -43,4 +43,4 @@ const intentValidator = Joi.object({
         .required(),
 }).required();
 
-module.exports = intentValidator;
+export default intentValidator;

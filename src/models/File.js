@@ -1,11 +1,13 @@
-const path = require("path");
-const fs = require("fs");
+import fs from "fs";
+import path from "path";
+import * as url from "url";
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 const intentDir = path.join(__dirname, "../agent/intents");
 const modelDir = path.join(__dirname, "../agent/data");
 const baseDir = path.join(__dirname, "../../");
 
-class File {
+export default class File {
     static async writeIntent(intent, fileName) {
         const json = JSON.stringify(intent);
         const intentPath = path.join(intentDir, fileName + ".json");
@@ -37,7 +39,7 @@ class File {
 
     static async removeIntent(fileName) {
         const intentPath = path.join(intentDir, fileName + ".json");
-
+        console.log(intentPath);
         if (fs.existsSync(intentPath)) {
             fs.unlink(intentPath, err => {
                 if (err) throw err;
@@ -50,15 +52,37 @@ class File {
 
     static async getIntent(slug) {
         const intents = await File.readIntents();
-
-        return intents.find(intent => intent.slug === slug);
+        for (const intent of intents) {
+            if (intent && intent.slug === slug) {
+                return intent;
+            }
+        }
+        return null;
     }
 
     static async readIntents() {
-        return fs
-            .readdirSync(intentDir)
-            .filter(name => path.extname(name) === ".json")
-            .map(name => require(path.join(intentDir, name)));
+        try {
+            const promises = fs
+                .readdirSync(intentDir)
+                .filter(name => path.extname(name) === ".json")
+                .map(name =>
+                    import(File.buildUrl(intentDir, name), {
+                        assert: { type: "json" },
+                    })
+                );
+
+            const intents = await Promise.all(promises);
+            const finalData = intents.map(intent => intent.default);
+            return finalData;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    static buildUrl(intentDir, name) {
+        const filePath = path.join(intentDir, name);
+
+        return `file://${filePath}`;
     }
 
     static createDataFolder() {
@@ -78,5 +102,3 @@ class File {
         return false;
     }
 }
-
-module.exports = File;

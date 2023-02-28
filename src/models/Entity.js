@@ -1,4 +1,4 @@
-class Entity {
+export default class Entity {
     static generate() {
         const defaultEntities = [];
 
@@ -143,5 +143,3 @@ class Entity {
         return defaultEntities;
     }
 }
-
-module.exports = Entity;

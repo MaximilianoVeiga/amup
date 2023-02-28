@@ -1,6 +1,6 @@
-const short = require("short-uuid");
+import short from "short-uuid";
 
-class Token {
+export default class Token {
     constructor(token) {
         this.token = token;
     }
@@ -9,5 +9,3 @@ class Token {
         return short.generate();
     }
 }
-
-module.exports = Token;

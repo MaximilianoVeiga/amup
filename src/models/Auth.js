@@ -1,5 +1,6 @@
-const Environment = require("../models/Environment");
-class Auth {
+import Environment from "../models/Environment.js";
+
+export default class Auth {
     constructor(auth) {
         this.username = auth.username;
         this.password = auth.password;
@@ -7,6 +8,21 @@ class Auth {
 
     isValid() {
         return this.username && this.password;
+    }
+
+    static validateFields(req, fields) {
+        const errors = [];
+
+        fields.forEach(field => {
+            if (!req.body[field]) {
+                errors.push({
+                    field,
+                    message: `You must provide a ${field}`,
+                });
+            }
+        });
+
+        return errors;
     }
 
     static verify(req, res) {
@@ -42,5 +58,3 @@ class Auth {
         };
     }
 }
-
-module.exports = Auth;
