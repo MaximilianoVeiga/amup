@@ -1,5 +1,5 @@
 export default class Entity {
-    static generate() {
+    static seed() {
         const defaultEntities = [];
 
         defaultEntities.push({

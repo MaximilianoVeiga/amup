@@ -23,16 +23,7 @@ export default class AuthController {
                     .json({ error: "Invalid username or password" });
             }
 
-            console.log(Environment.getPassword());
-            console.log(password);
-            console.log(process.env.PASS || "admin");
-
-            console.log(bcrypt.compare(password, Environment.getPassword()));
-
-            const isMatch = await bcrypt.compare(
-                password,
-                Environment.getPassword()
-            );
+            const isMatch = bcrypt.compare(password, Environment.getPassword());
 
             if (!isMatch) {
                 return res
@@ -41,7 +32,7 @@ export default class AuthController {
             }
 
             const token = jwt.sign({ username }, Environment.getAuthToken(), {
-                expiresIn: "1h",
+                expiresIn: 3600000,
             });
 
             res.json({

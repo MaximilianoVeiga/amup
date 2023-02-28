@@ -8,7 +8,7 @@ export default class Environment {
     }
 
     static getUsername() {
-        return process.env.USERNAME;
+        return process.env.USER;
     }
 
     static getPassword() {
