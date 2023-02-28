@@ -107,20 +107,21 @@ export default class Entity {
                 "Bauru",
                 "Campinas",
             ],
-        }),
-            defaultEntities.push({
-                name: "day",
-                type: "time",
-                data: [
-                    "domingo",
-                    "segunda",
-                    "terça",
-                    "quarta",
-                    "quinta",
-                    "sexta",
-                    "sábado",
-                ],
-            });
+        });
+
+        defaultEntities.push({
+            name: "day",
+            type: "time",
+            data: [
+                "domingo",
+                "segunda",
+                "terça",
+                "quarta",
+                "quinta",
+                "sexta",
+                "sábado",
+            ],
+        });
 
         defaultEntities.push({
             name: "month",
