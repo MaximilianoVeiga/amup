@@ -1,15 +1,15 @@
-const axios = require("axios");
+import axios from "axios";
 
 async function sendWebhook(sessionId, intent, entities, messages, parameters) {
     const webhookUrl = process.env.WEBHOOK_URL;
     const webhookSecret = process.env.WEBHOOK_SECRET;
 
     const webhookPayload = {
-        sessionId: sessionId,
-        intent: intent,
-        entities: entities,
-        parameters: parameters,
-        messages: messages,
+        sessionId,
+        intent,
+        entities,
+        parameters,
+        messages,
     };
     const webhookHeaders = {
         "Content-Type": "application/json",
@@ -22,10 +22,10 @@ async function sendWebhook(sessionId, intent, entities, messages, parameters) {
         });
         return response.data;
     } catch (error) {
-        console.log(`${"[AMUP]".yellow} Webhook error`);
+        Text.logMessage("Webhook error");
     }
 }
 
-module.exports = {
+export default {
     sendWebhook,
 };

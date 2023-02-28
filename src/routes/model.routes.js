@@ -1,10 +1,14 @@
-const express = require("express");
+import express from "express";
+
 const router = express.Router();
 
-const ModelController = require("../controllers/ModelController");
-const IntentController = require("../controllers/IntentController");
+import IntentController from "../controllers/IntentController.js";
+import ModelController from "../controllers/ModelController.js";
 
-router.get("/train", ModelController.train);
-router.get("/detectIntent", IntentController.detect);
+const intentController = new IntentController();
+const modelController = new ModelController();
 
-module.exports = router;
+router.get("/detectIntent", intentController.detect);
+router.get("/train", modelController.train);
+
+export default router;

@@ -1,20 +1,18 @@
-const colors = require("colors");
+import short from "short-uuid";
 
-const short = require("short-uuid");
+import Context from "../models/Context.js";
+import Entity from "../models/Entity.js";
+import Environment from "../models/Environment.js";
+import File from "../models/File.js";
+import Text from "../models/Text.js";
 
-const File = require("../models/File");
-const Text = require("../models/Text");
-const Context = require("../models/Context");
-const Entity = require("../models/Entity");
-const Environment = require("../models/Environment");
-
-const { NlpManager } = require("@horizon-rs/node-nlp");
+import { NlpManager } from "@horizon-rs/node-nlp";
 
 const language = Environment.getLanguage();
 
-const utils = require("../utils");
+import utils from "../utils.js";
 
-class Model {
+export default class Model {
     static async trainModel(intents) {
         const manager = new NlpManager({
             languages: [language],
@@ -62,7 +60,7 @@ class Model {
             const intentDomain = intent.domain;
             const intentContext = intent.inputContexts;
 
-            if (intentContext.length === 0) {
+            if (intentContext && intentContext.length === 0) {
                 if (intentDomain) {
                     manager.assignDomain(language, intentSlug, intentDomain);
                 }
@@ -125,7 +123,7 @@ class Model {
             await Model.trainModel(await File.readIntents());
         }
 
-        console.log(`${"[AMUP]".yellow} Bot is detecting intent`);
+        Text.logMessage("Bot is detecting intent");
 
         const manager = new NlpManager({
             languages: [language],
@@ -147,7 +145,7 @@ class Model {
 
             return response;
         } catch (error) {
-            console.log(`${"[AMUP]".yellow} Bot is not loaded`);
+            Text.logMessage("Bot is not loaded");
 
             throw error;
         }
@@ -155,12 +153,14 @@ class Model {
 
     static async train() {
         try {
-            console.log(`${"[AMUP]".yellow} Bot is training`);
+            Text.logMessage("Bot is training");
+
             const intents = await File.readIntents();
             await Model.trainModel(intents);
-            console.error(`${"[AMUP]".yellow} Bot is trained sucessfully`);
+            Text.logMessage("Bot is trained sucessfully");
         } catch (error) {
-            console.error(`${"[AMUP]".yellow} Bot is not trained`);
+            Text.logMessage("Bot is not trained");
+
             console.log(error);
         }
     }
@@ -175,7 +175,7 @@ class Model {
             await manager.save(fileName);
             File.removeBaseModel();
         } catch (error) {
-            console.log(`${"[AMUP]".yellow} Bot is not saved`);
+            Text.logMessage("Bot is not saved");
 
             throw error;
         }
@@ -201,18 +201,15 @@ class Model {
             };
         });
 
+        if (parameters && parameters.name) {
+            parameters.name = Text.formatName(parameters.name);
+        }
+
         let newEntitiesCreated = {};
 
         entities.map(entity => {
             if (entity.entityType === "time") {
                 newEntitiesCreated[entity.entityType] = entity.source;
-            } else if (
-                entity.entityType !== "boolean" &&
-                entity.entityType !== "hashtag"
-            ) {
-                newEntitiesCreated[entity.entityType] = capitalizeFirstLetter(
-                    entity.value
-                );
             }
         });
 
@@ -221,9 +218,12 @@ class Model {
             ...newEntitiesCreated,
         };
 
+        console.log(intentData);
+
         const intent = {
             isFallback: response.intent === "None" ? true : false,
-            displayName: intentData.name,
+            displayName:
+                intentData.name === "None" ? "Fallback" : intentData.name,
             endInteraction: intentData.endInteraction,
             id: short.generate(),
         };
@@ -333,5 +333,3 @@ class Model {
         return payload;
     }
 }
-
-module.exports = Model;

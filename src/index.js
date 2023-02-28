@@ -1,21 +1,28 @@
-const path = require("path");
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 
-require("dotenv").config({ path: path.join(__dirname, "..", ".env") });
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const express = require("express");
+dotenv.config({ path: path.join(__dirname, "..", ".env") });
+
+import express from "express";
+
+import bodyParser from "body-parser";
+import cors from "cors";
+
 const app = express();
-const cors = require("cors");
 
-const Environment = require("./models/Environment");
+import Environment from "./models/Environment.js";
+import Model from "./models/Model.js";
+import Text from "./models/Text.js";
 
 const trainOnStartup = Environment.getTrainOnStartup();
 
 if (trainOnStartup) {
-    const Model = require("./models/Model");
     Model.train();
 }
-
-const bodyParser = require("body-parser");
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -23,24 +30,20 @@ app.use(cors());
 const url = process.env.URL || "localhost";
 const port = process.env.PORT || 3000;
 
-const colors = require("colors");
+import authRouter from "./routes/auth.routes.js";
+import healthRouter from "./routes/health.routes.js";
+import intentRouter from "./routes/intent.routes.js";
+import modelRouter from "./routes/model.routes.js";
 
-const modelRouter = require("./routes/model.routes");
-const authRouter = require("./routes/auth.routes");
-const intentsRouter = require("./routes/intent.routes");
-const healthRouter = require("./routes/health.routes");
-
-app.use("/", modelRouter);
 app.use("/api", authRouter);
-app.use("/api", intentsRouter);
 app.use("/api", healthRouter);
+app.use("/api", intentRouter);
+app.use("/", modelRouter);
 
 app.get("/", (req, res) => {
     res.send("[AMUP] - Artifical Machine Understanding Plataform - API");
 });
 
 app.listen(port, () => {
-    console.log(
-        `${"[AMUP]".yellow} Server is running on http://${url}:${port}`
-    );
+    Text.logMessage(`Server is running on http://${url}:${port}`);
 });

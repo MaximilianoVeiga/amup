@@ -1,16 +1,10 @@
-const colors = require("colors");
+import short from "short-uuid";
 
-const short = require("short-uuid");
-
-class Intent {
+export default class Intent {
     constructor(intent) {
-        this.id = short.generate();
+        this.id = intent.id ? intent.id : short.generate();
         this.name = intent.name;
-        this.slug = intent.name
-            .toLowerCase()
-            .replace(/\s+/g, "")
-            .replace("Intent", "")
-            .replace("intent", "");
+        this.slug = intent.slug;
         this.fallbackIntent = intent.fallbackIntent;
         this.endInteraction = intent.endInteraction;
         this.priority = 500000;
@@ -21,14 +15,14 @@ class Intent {
     }
 
     isValid() {
-        return (
-            this.name &&
+        return this.name &&
             this.slug &&
             this.utterances &&
             this.utterances.length > 0 &&
             this.responses &&
             this.responses.length > 0
-        );
+            ? true
+            : false;
     }
 
     toJSON() {
@@ -45,30 +39,4 @@ class Intent {
             responses: this.responses,
         };
     }
-
-    static logData(
-        sessionId,
-        intentDisplayName,
-        intentText,
-        responseMessages,
-        parameters,
-        inputContexts,
-        outputContexts
-    ) {
-        console.log(colors.green(`Session: ${sessionId}`));
-        console.log(colors.green(`Intent: ${intentDisplayName}`));
-        console.log(colors.green(`Input: ${intentText}`));
-        console.log(
-            colors.green(`Response: ${JSON.stringify(responseMessages)}`)
-        );
-        console.log(colors.green(`Parameters: ${JSON.stringify(parameters)}`));
-        console.log(
-            colors.green(`Input contexts: ${JSON.stringify(inputContexts)}`)
-        );
-        console.log(
-            colors.green(`Output contexts: ${JSON.stringify(outputContexts)}`)
-        );
-    }
 }
-
-module.exports = Intent;

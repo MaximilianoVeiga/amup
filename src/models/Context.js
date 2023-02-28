@@ -1,4 +1,4 @@
-class Context {
+export default class Context {
     static getName(context) {
         let path = "model.nlp";
         if (context && context.name) {
@@ -92,5 +92,3 @@ class Context {
         return groupedIntents;
     }
 }
-
-module.exports = Context;

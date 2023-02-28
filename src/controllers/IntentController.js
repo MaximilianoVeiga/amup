@@ -1,23 +1,21 @@
-const colors = require("colors");
-
-const redis = require("redis");
+import redis from "redis";
 
 const client = redis.createClient({
     host: process.env.REDIS_IP,
     port: process.env.REDIS_PORT,
 });
 
-const intentValidator = require("../validators/IntentCreateValidator");
+import intentValidator from "../validators/IntentCreateValidator.js";
 
-const Auth = require("../models/Auth");
-const Context = require("../models/Context");
-const Intent = require("../models/Intent");
-const Token = require("../models/Token");
-const Model = require("../models/Model");
-const File = require("../models/File");
-const Text = require("../models/Text");
+import Auth from "../models/Auth.js";
+import Context from "../models/Context.js";
+import File from "../models/File.js";
+import Intent from "../models/Intent.js";
+import Model from "../models/Model.js";
+import Text from "../models/Text.js";
+import Token from "../models/Token.js";
 
-class IntentController {
+export default class IntentController {
     async detect(req, res) {
         if (Auth.verify(req, res)) {
             const intentText = req.query.text;
@@ -27,111 +25,138 @@ class IntentController {
 
             try {
                 parameters = JSON.parse(req.query.parameters);
-            } catch (e) {}
+            } catch (e) {
+                parameters = {};
+            }
 
             client.get(sessionId, async (err, session) => {
                 if (session) {
-                    const sessionParameters = JSON.parse(session);
+                    try {
+                        const sessionParameters = JSON.parse(session);
 
-                    const modelName =
-                        Context.getName(sessionParameters.outputContexts[0]) ||
-                        "model.nlp";
+                        const modelName =
+                            Context.getName(
+                                sessionParameters.outputContexts[0]
+                            ) || "model.nlp";
 
-                    parameters = {
-                        ...parameters,
-                        ...sessionParameters.parameters,
-                    };
+                        parameters = {
+                            ...parameters,
+                            ...sessionParameters.parameters,
+                        };
 
-                    const response = await Model.detect(
-                        intentText,
-                        sessionId,
-                        modelName,
-                        parameters
-                    );
+                        const response = await Model.detect(
+                            intentText,
+                            sessionId,
+                            modelName,
+                            parameters
+                        );
 
-                    parameters = {
-                        ...parameters,
-                        ...response.parameters,
-                    };
+                        parameters = {
+                            ...parameters,
+                            ...response.parameters,
+                        };
 
-                    const inputContexts = [
-                        ...sessionParameters.inputContexts,
-                        ...response.inputContexts,
-                    ];
-                    const outputContexts = [
-                        ...sessionParameters.outputContexts,
-                        ...response.outputContexts,
-                    ];
+                        const inputContexts = [
+                            ...sessionParameters.inputContexts,
+                            ...response.inputContexts,
+                        ];
+                        const outputContexts = [
+                            ...sessionParameters.outputContexts,
+                            ...response.outputContexts,
+                        ];
 
-                    const newSession = {
-                        parameters: parameters,
-                        inputContexts: Context.decrease(
-                            Context.update(inputContexts)
-                        ),
-                        outputContexts: Context.decrease(
-                            Context.update(outputContexts)
-                        ),
-                        lastIntent: response.intent,
-                    };
+                        const newSession = {
+                            parameters: parameters,
+                            inputContexts: Context.decrease(
+                                Context.update(inputContexts)
+                            ),
+                            outputContexts: Context.decrease(
+                                Context.update(outputContexts)
+                            ),
+                            lastIntent: response.intent,
+                        };
 
-                    if (response.endInteraction) {
-                        newSession.parameters = {};
-                        newSession.inputContexts = [];
-                        newSession.outputContexts = [];
-                        newSession.lastIntent = {};
+                        if (response.endInteraction) {
+                            newSession.parameters = {};
+                            newSession.inputContexts = [];
+                            newSession.outputContexts = [];
+                            newSession.lastIntent = {};
+                        }
+
+                        response.outputContexts = newSession.outputContexts;
+                        response.inputContexts = newSession.inputContexts;
+
+                        Text.logData(
+                            sessionId,
+                            response.intent.displayName,
+                            intentText,
+                            response.messages,
+                            parameters,
+                            inputContexts,
+                            outputContexts
+                        );
+
+                        client.setex(
+                            sessionId,
+                            1440,
+                            JSON.stringify(newSession)
+                        );
+
+                        Text.logMessage("Detected intent correctly");
+
+                        res.send(response);
+                    } catch (error) {
+                        Text.logMessage("Error on detecting intent");
+
+                        console.log(error);
+                        res.status(500).send({
+                            status: "500",
+                            message: "Error on detect intent",
+                        });
                     }
-
-                    response.outputContexts = newSession.outputContexts;
-                    response.inputContexts = newSession.inputContexts;
-
-                    Intent.logData(
-                        sessionId,
-                        response.intent.displayName,
-                        intentText,
-                        response.messages,
-                        parameters,
-                        inputContexts,
-                        outputContexts
-                    );
-
-                    client.setex(sessionId, 1440, JSON.stringify(newSession));
-
-                    console.log(`${"[AMUP]".yellow} Detected intent correctly`);
-
-                    res.send(response);
                 } else {
-                    const response = await Model.detect(
-                        intentText,
-                        sessionId,
-                        "model.nlp",
-                        parameters
-                    );
+                    try {
+                        const response = await Model.detect(
+                            intentText,
+                            sessionId,
+                            "model.nlp",
+                            parameters
+                        );
 
-                    const inputContexts = response.inputContexts || [];
-                    const outputContexts = response.outputContexts || [];
+                        const inputContexts = response.inputContexts || [];
+                        const outputContexts = response.outputContexts || [];
 
-                    const sessionParameters = {
-                        sessionId: sessionId,
-                        lastIntent: response.intent,
-                        parameters: parameters ? parameters : [],
-                        inputContexts:
-                            inputContexts && inputContexts != []
-                                ? Context.update(inputContexts)
-                                : inputContexts,
-                        outputContexts:
-                            outputContexts && outputContexts != []
-                                ? Context.update(response.outputContexts)
-                                : outputContexts,
-                    };
+                        const sessionParameters = {
+                            sessionId: sessionId,
+                            lastIntent: response.intent,
+                            parameters: parameters ? parameters : [],
+                            inputContexts:
+                                inputContexts && inputContexts != []
+                                    ? Context.update(inputContexts)
+                                    : inputContexts,
+                            outputContexts:
+                                outputContexts && outputContexts != []
+                                    ? Context.update(response.outputContexts)
+                                    : outputContexts,
+                        };
 
-                    client.setex(
-                        sessionId,
-                        1440,
-                        JSON.stringify(sessionParameters)
-                    );
-                    console.log(`${"[AMUP]".yellow} Detected intent correctly`);
+                        client.setex(
+                            sessionId,
+                            1440,
+                            JSON.stringify(sessionParameters)
+                        );
+                        Text.logMessage("Detected intent correctly");
 
-                    res.send(response);
+                        res.send(response);
+                    } catch (error) {
+                        Text.logMessage("Error on detect intent");
+
+                        console.log(error);
+                        res.status(500).send({
+                            status: "500",
+                            message: "Error on detecting intent",
+                        });
+                    }
                 }
             });
         }
@@ -154,25 +179,27 @@ class IntentController {
 
                 request.slug = Text.slugify(request.name);
 
-                if (intents.find(i => i.slug === request.slug)) {
-                    console.log(`${"[AMUP]".yellow} Intent already exists`);
+                const intentData = intents.find(i => i?.slug === request.slug);
+
+                if (intentData) {
+                    Text.logMessage("Intent already exists");
                     res.status(409).send({
                         status: "409",
                         message: "Intent already exists",
                     });
-                } else {
-                    const intent = new Intent(request);
+                    return;
+                }
 
-                    if (intent.isValid()) {
-                        intents.push(intent);
-                        await File.writeIntent(intent.toJSON(), request.slug);
-                        console.log(`${"[AMUP]".yellow} Intent created`);
-                        res.status(201).send({
-                            status: "201",
-                            message: "Intent created",
-                        });
-                        Intent.train();
-                    }
+                const intent = new Intent(request);
+
+                if (intent.isValid()) {
+                    await File.writeIntent(intent.toJSON(), request.slug);
+                    Text.logMessage("Intent created");
+                    res.status(201).send({
+                        status: "201",
+                        message: "Intent created",
+                    });
+                    Model.train();
                 }
             } catch (err) {
                 console.error(err);
@@ -194,11 +221,10 @@ class IntentController {
                 const request = await intentValidator.validateAsync(reqIntent);
                 const intents = await File.readIntents();
 
-                request.slug = Text.slugify(request.name);
+                const intent = intents.find(i => i?.id === intentId);
 
-                const intent = intents.find(i => i.id === intentId);
                 if (!intent) {
-                    console.log(`${"[AMUP]".yellow} Intent not exists`);
+                    Text.logMessage("Intent not exists");
                     res.status(404).send({
                         status: "404",
                         message: "Intent not exists",
@@ -206,21 +232,33 @@ class IntentController {
                     return;
                 }
 
-                const updatedIntent = new Intent(request);
-                updatedIntent.id = intentId;
+                const intentData = {
+                    ...intent,
+                    ...request,
+                    id: intent.id,
+                    slug: intent.slug,
+                };
+
+                const updatedIntent = new Intent(intentData);
 
                 if (updatedIntent.isValid()) {
-                    File.removeIntent(intent.slug);
+                    await File.removeIntent(intentData.slug);
                     await File.writeIntent(
                         updatedIntent.toJSON(),
-                        updatedIntent.slug
+                        intentData.slug
                     );
-                    console.log(`${"[AMUP]".yellow} Intent updated`);
-                    res.status(201).send({
-                        status: "201",
+                    Text.logMessage("Intent updated");
+                    res.status(204).send({
+                        status: "204",
                         message: "Intent updated",
                     });
                     Model.train();
+                } else {
+                    Text.logMessage("Intent not updated");
+                    res.status(400).send({
+                        status: "400",
+                        message: "Intent not updated",
+                    });
                 }
             } catch (err) {
                 console.error(err);
@@ -239,29 +277,36 @@ class IntentController {
             const intents = await File.readIntents();
 
             if (!intentId) {
-                console.log(`${"[AMUP]".yellow} Intent not found`);
-                res.status(404).send({ status: "404" });
-            }
+                Text.logMessage("Intent not found");
 
-            const intent = intents.find(i => i.id === intentId);
-
-            if (intent) {
-                File.removeIntent(intent.slug);
-                console.log(`${"[AMUP]".yellow} Intent deleted`);
-                res.status(200).send({
-                    status: "200",
-                    message: "Intent deleted",
-                });
-                Model.train();
-            } else {
-                console.log(`${"[AMUP]".yellow} Intent not found`);
                 res.status(404).send({
                     status: "404",
                     message: "Intent not found",
                 });
+                return;
             }
+
+            const intent = intents.find(i => i?.id === intentId);
+
+            if (!intent) {
+                Text.logMessage("Intent not found");
+
+                res.status(404).send({
+                    status: "404",
+                    message: "Intent not found",
+                });
+                return;
+            }
+
+            await File.removeIntent(intent?.slug);
+
+            Text.logMessage("Intent deleted");
+            res.status(200).send({
+                status: "200",
+                message: "Intent deleted",
+            });
+
+            Model.train();
         }
     }
 }
-
-module.exports = new IntentController();

@@ -1,27 +1,28 @@
 {
     "name": "amup",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "description": "AMUP - Artificial Machine Understanding Platform",
     "main": "src/index.js",
+    "type": "module",
     "scripts": {
-        "start": "node src/index.js",
-        "dev": "nodemon src/index.js"
+        "start": "node --no-warnings src/index.js",
+        "dev": "nodemon --no-warnings src/index.js"
     },
     "keywords": [],
     "author": "Maximiliano Veiga",
     "license": "APACHE-2.0",
     "dependencies": {
-        "@horizon-rs/node-nlp": "^4.26.1",
+        "@horizon-rs/node-nlp": "^4.26.2",
         "axios": "^0.23.0",
+        "bcryptjs": "^2.4.3",
         "body-parser": "^1.19.2",
-        "colors": "^1.4.0",
+        "chalk": "^5.2.0",
         "cors": "^2.8.5",
         "dotenv": "^16.0.0",
         "express": "^4.17.1",
         "express-validation": "^4.1.0",
         "joi": "^17.6.0",
         "jsonwebtoken": "^8.5.1",
-        "node-nlp": "^4.22.1",
         "redis": "^3.1.2",
         "short-uuid": "^4.2.0"
     },
