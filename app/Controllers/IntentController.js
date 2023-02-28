@@ -5,14 +5,14 @@ const client = redis.createClient({
     port: process.env.REDIS_PORT,
 });
 
-import intentValidator from "../validators/IntentCreateValidator.js";
+import intentValidator from "#validators/IntentCreateValidator.js";
 
-import Context from "../models/Context.js";
-import File from "../models/File.js";
-import Intent from "../models/Intent.js";
-import Model from "../models/Model.js";
-import Text from "../models/Text.js";
-import Token from "../models/Token.js";
+import Context from "#models/Context.js";
+import File from "#models/File.js";
+import Intent from "#models/Intent.js";
+import Model from "#models/Model.js";
+import Text from "#models/Text.js";
+import Token from "#models/Token.js";
 
 export default class IntentController {
     async detect(req, res) {

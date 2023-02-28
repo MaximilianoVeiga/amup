@@ -1,10 +1,10 @@
 import short from "short-uuid";
 
-import Context from "../models/Context.js";
-import Entity from "../models/Entity.js";
-import Environment from "../models/Environment.js";
-import File from "../models/File.js";
-import Text from "../models/Text.js";
+import Environment from "#config/Environment.js";
+import Context from "#models/Context.js";
+import Entity from "#models/Entity.js";
+import File from "#models/File.js";
+import Text from "#models/Text.js";
 
 import { NlpManager } from "@horizon-rs/node-nlp";
 

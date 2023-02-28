@@ -3,8 +3,8 @@ import path from "path";
 import * as url from "url";
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
-const intentDir = path.join(__dirname, "../agent/intents");
-const modelDir = path.join(__dirname, "../agent/data");
+const intentDir = path.join(__dirname, "../Agent/Intents");
+const modelDir = path.join(__dirname, "../Agent/Models");
 const baseDir = path.join(__dirname, "../../");
 
 export default class File {

@@ -1,12 +1,12 @@
 {
     "name": "amup",
-    "version": "2.2.0",
+    "version": "2.3.0",
     "description": "AMUP - Artificial Machine Understanding Platform",
-    "main": "src/index.js",
+    "main": "start/index.js",
     "type": "module",
     "scripts": {
-        "start": "node --no-warnings src/index.js",
-        "dev": "nodemon --no-warnings src/index.js"
+        "start": "node --no-warnings start/index.js",
+        "dev": "nodemon --no-warnings start/index.js"
     },
     "keywords": [],
     "author": "Maximiliano Veiga",
@@ -29,6 +29,19 @@
     "devDependencies": {
         "eslint": "^8.21.0",
         "nodemon": "^2.0.19"
+    },
+    "imports": {
+        "#agent/*": "./app/Agent/*",
+        "#agent/intents/*": "./app/Agent/Intents",
+        "#agent/models/*": "./app/Agent/Models",
+        "#models/*": "./app/Models/*",
+        "#routes/*": "./app/Routes/*",
+        "#controllers/*": "./app/Controllers/*",
+        "#middlewares/*": "./app/Middlewares/*",
+        "#validators/*": "./app/Validators/*",
+        "#config/*": "./config/*",
+        "#start/*": "./start/*",
+        "#app/*": "./app/*"
     },
     "repository": {
         "type": "git",
