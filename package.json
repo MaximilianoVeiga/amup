@@ -37,6 +37,7 @@
         "#models/*": "./app/Models/*",
         "#routes/*": "./app/Routes/*",
         "#controllers/*": "./app/Controllers/*",
+        "#database/*": "./app/Database/*",
         "#middlewares/*": "./app/Middlewares/*",
         "#validators/*": "./app/Validators/*",
         "#config/*": "./config/*",
@@ -45,10 +46,10 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/MaximilianoVeiga/aurora-nlpjs.git"
+        "url": "git+https://github.com/MaximilianoVeiga/amup.git"
     },
     "bugs": {
-        "url": "https://github.com/MaximilianoVeiga/aurora-nlpjs/issues"
+        "url": "https://github.com/MaximilianoVeiga/amup/issues"
     },
-    "homepage": "https://github.com/MaximilianoVeiga/aurora-nlpjs#readme"
+    "homepage": "https://github.com/MaximilianoVeiga/amup#readme"
 }

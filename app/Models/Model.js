@@ -19,6 +19,7 @@ export default class Model {
             forceNER: true,
             nlu: { log: false },
             autoSave: true,
+            threshold: Environment.getThreshold(),
         });
 
         const intentsByContext = Context.groupIntents(intents);
@@ -29,6 +30,7 @@ export default class Model {
                 forceNER: true,
                 nlu: { log: false },
                 autoSave: true,
+                threshold: Environment.getThreshold(),
             });
 
             const intentsInContext = intentsByContext[context].intents;
@@ -270,9 +272,10 @@ export default class Model {
             }
 
             for (let i = 0; i < messages.length; i++) {
-                // push suggestions on the last message
                 if (i === messages.length - 1) {
-                    messages[i].suggestions = suggestions[0];
+                    if (suggestions.length > 0) {
+                        messages[i].suggestions = suggestions[0];
+                    }
                 }
             }
 
@@ -307,10 +310,13 @@ export default class Model {
             inputContexts: intentData.inputContexts || [],
             outputContexts: intentData.outputContexts || [],
             messages: messages,
-            blocks: blocks[0],
             sentimentAnalysisResult: sentiment,
             intent: intent,
         };
+
+        if (blocks && blocks[0]) {
+            payload.blocks = blocks[0];
+        }
 
         if (webhookEnabled) {
             const webhookResponse = await utils.sendWebhook(
