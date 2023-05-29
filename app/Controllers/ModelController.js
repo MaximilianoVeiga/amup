@@ -1,4 +1,4 @@
-import Model from "../models/Model.js";
+import Model from "../Models/Model.js";
 
 export default class ModelController {
     async train(req, res) {

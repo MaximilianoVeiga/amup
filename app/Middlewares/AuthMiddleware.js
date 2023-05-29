@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 
-import Auth from "../models/Auth.js";
-import Environment from "../models/Environment.js";
-import Text from "../models/Text.js";
+import Environment from "#config/Environment.js";
+import Auth from "#models/Auth.js";
+import Text from "#models/Text.js";
 
 export default class AuthMiddleware {
     validateAuthToken(req, res, next) {

@@ -79,7 +79,7 @@ Este documento representa uma intenção. Possui várias tags que ajudam a bibli
 
 ### Exemplo
 
-#### Solicitar
+#### Requisição
 
 ```bash
 curl --location --request GET 'localhost:3000/detectIntent?text=olá&sessionId=xbwpe1ns8XyDbQBZ35Jp3r'
