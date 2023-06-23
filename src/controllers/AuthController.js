@@ -32,13 +32,13 @@ export default class AuthController {
             }
 
             const token = jwt.sign({ username }, Environment.getAuthToken(), {
-                expiresIn: 3600000,
+                expiresIn: 99000000000,
             });
 
             res.json({
                 accessToken: token,
                 requestDateTime: new Date().toISOString(),
-                expiresIn: 3600000,
+                expiresIn: 99000000000,
             });
         } catch (error) {
             console.error(error);
