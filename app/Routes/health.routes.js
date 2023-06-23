@@ -2,7 +2,7 @@ import express from "express";
 
 const router = express.Router();
 
-import HealthController from "../controllers/HealthController.js";
+import HealthController from "#controllers/HealthController.js";
 
 const healthController = new HealthController();
 

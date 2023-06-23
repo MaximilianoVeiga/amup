@@ -2,8 +2,8 @@ import express from "express";
 
 const router = express.Router();
 
-import IntentController from "../controllers/IntentController.js";
-import AuthMiddleware from "../middleware/AuthMiddleware.js";
+import IntentController from "#controllers/IntentController.js";
+import AuthMiddleware from "#middlewares/AuthMiddleware.js";
 
 const authMiddleware = new AuthMiddleware();
 const intentController = new IntentController();

@@ -46,4 +46,8 @@ export default class Environment {
     static getLanguage() {
         return process.env.LANGUAGE;
     }
+
+    static getThreshold() {
+        return process.env.NLU_TRESHOLD;
+    }
 }

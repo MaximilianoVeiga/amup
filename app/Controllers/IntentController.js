@@ -1,18 +1,13 @@
-import redis from "redis";
+import intentValidator from "#validators/IntentCreateValidator.js";
 
-const client = redis.createClient({
-    host: process.env.REDIS_IP,
-    port: process.env.REDIS_PORT,
-});
+import Context from "#models/Context.js";
+import File from "#models/File.js";
+import Intent from "#models/Intent.js";
+import Model from "#models/Model.js";
+import Text from "#models/Text.js";
+import Token from "#models/Token.js";
 
-import intentValidator from "../validators/IntentCreateValidator.js";
-
-import Context from "../models/Context.js";
-import File from "../models/File.js";
-import Intent from "../models/Intent.js";
-import Model from "../models/Model.js";
-import Text from "../models/Text.js";
-import Token from "../models/Token.js";
+import RedisDAO from "#database/Redis.js";
 
 export default class IntentController {
     async detect(req, res) {
@@ -26,6 +21,9 @@ export default class IntentController {
         } catch (e) {
             parameters = {};
         }
+
+        const dao = new RedisDAO();
+        let client = await dao.connect();
 
         client.get(sessionId, async (err, session) => {
             if (session) {
@@ -57,6 +55,7 @@ export default class IntentController {
                         ...sessionParameters.inputContexts,
                         ...response.inputContexts,
                     ];
+
                     const outputContexts = [
                         ...sessionParameters.outputContexts,
                         ...response.outputContexts,
