@@ -3,9 +3,10 @@ import jwt from "jsonwebtoken";
 
 import Environment from "#config/Environment.js";
 import Auth from "#models/Auth.js";
+import { Request, Response } from "express";
 
 export default class AuthController {
-    async signin(req, res) {
+    async signin(req: Request, res: Response): Promise<void> {
         const errors = Auth.validateFields(req, ["username", "password"]);
 
         if (errors.length > 0) {
@@ -23,7 +24,10 @@ export default class AuthController {
                     .json({ error: "Invalid username or password" });
             }
 
-            const isMatch = bcrypt.compare(password, Environment.getPassword());
+            const isMatch = await bcrypt.compare(
+                password,
+                Environment.getPassword()
+            );
 
             if (!isMatch) {
                 return res

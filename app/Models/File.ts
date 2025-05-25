@@ -8,7 +8,7 @@ const modelDir = path.join(__dirname, "../Agent/Models");
 const baseDir = path.join(__dirname, "../../");
 
 export default class File {
-    static async writeIntent(intent, fileName) {
+    static async writeIntent(intent: unknown, fileName: string): Promise<void> {
         const json = JSON.stringify(intent);
         const intentPath = path.join(intentDir, fileName + ".json");
         fs.writeFileSync(intentPath, json, "utf8", err => {
@@ -18,26 +18,26 @@ export default class File {
         });
     }
 
-    static getModel(modelName = "model.nlp") {
+    static getModel(modelName = "model.nlp"): string {
         const modelPath = path.join(modelDir, modelName);
         return modelPath;
     }
 
-    static removeModel(modelName = "model.nlp") {
+    static removeModel(modelName = "model.nlp"): void {
         const modelPath = path.join(modelDir, modelName);
         if (fs.existsSync(modelPath)) {
             fs.unlinkSync(modelPath);
         }
     }
 
-    static removeBaseModel(modelName = "model.nlp") {
+    static removeBaseModel(modelName = "model.nlp"): void {
         const baseModelPath = path.join(baseDir, modelName);
         if (fs.existsSync(baseModelPath)) {
             fs.unlinkSync(baseModelPath);
         }
     }
 
-    static async removeIntent(fileName) {
+    static async removeIntent(fileName: string): Promise<boolean> {
         const intentPath = path.join(intentDir, fileName + ".json");
         if (fs.existsSync(intentPath)) {
             fs.unlink(intentPath, err => {
@@ -49,7 +49,7 @@ export default class File {
         }
     }
 
-    static async getIntent(slug) {
+    static async getIntent(slug: string): Promise<any | null> {
         const intents = await File.readIntents();
         for (const intent of intents) {
             if (intent && intent.slug === slug) {
@@ -59,7 +59,7 @@ export default class File {
         return null;
     }
 
-    static async readIntents() {
+    static async readIntents(): Promise<any[]> {
         try {
             const promises = fs
                 .readdirSync(intentDir)
@@ -78,13 +78,13 @@ export default class File {
         }
     }
 
-    static buildUrl(intentDir, name) {
+    static buildUrl(intentDir: string, name: string): string {
         const filePath = path.join(intentDir, name);
 
         return `file://${filePath}`;
     }
 
-    static createDataFolder() {
+    static createDataFolder(): boolean {
         if (!fs.existsSync(modelDir)) {
             fs.mkdirSync(modelDir);
             return true;
@@ -92,7 +92,7 @@ export default class File {
         return false;
     }
 
-    static async verifyModel(modelName) {
+    static async verifyModel(modelName: string): Promise<boolean> {
         const modelPath = path.join(modelDir, modelName);
 
         if (fs.existsSync(modelPath)) {

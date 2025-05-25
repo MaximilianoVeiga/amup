@@ -1,6 +1,8 @@
-# AMUP ![nodejs](https://img.shields.io/badge/nodejs-v16.8.0-blue) ![code quality](https://img.shields.io/badge/code%20quality-A-green) ![building](https://img.shields.io/badge/building-passing-blue)
+# AMUP ![nodejs](https://img.shields.io/badge/nodejs-v16.8.0-blue) ![typescript](https://img.shields.io/badge/typescript-v5-blue) ![code quality](https://img.shields.io/badge/code%20quality-A-green) ![building](https://img.shields.io/badge/building-passing-blue)
 
 `AMUP - Artificial Machine Understanding Plataform` is a project that modifies the entire NLP.js implementation to create conversational contexts. Making it easy to develop and create chatbots that support process, tokenize, categorize intents, and extract text entities in multiple languages. The project supports multiple levels of conversational context through the synthesis of multiple agents.
+
+This codebase is now written in **TypeScript** for improved type safety and development experience.
 
 Currently supporting:
 

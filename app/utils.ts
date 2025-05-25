@@ -1,6 +1,13 @@
 import axios from "axios";
+import Text from "#models/Text.js";
 
-async function sendWebhook(sessionId, intent, entities, messages, parameters) {
+async function sendWebhook(
+    sessionId: string,
+    intent: unknown,
+    entities: unknown[],
+    messages: unknown[],
+    parameters: Record<string, unknown>
+): Promise<unknown> {
     const webhookUrl = process.env.WEBHOOK_URL;
     const webhookSecret = process.env.WEBHOOK_SECRET;
 

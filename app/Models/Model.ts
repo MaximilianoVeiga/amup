@@ -11,9 +11,10 @@ import { NlpManager } from "@horizon-rs/node-nlp";
 const language = Environment.getLanguage();
 
 import utils from "../utils.js";
+import type { IntentProps } from "./Intent.js";
 
 export default class Model {
-    static async trainModel(intents) {
+    static async trainModel(intents: IntentProps[]): Promise<void> {
         const manager = new NlpManager({
             languages: [language],
             forceNER: true,
@@ -112,11 +113,11 @@ export default class Model {
     }
 
     static async detect(
-        query,
-        sessionId = null,
-        model = "model.nlp",
-        parameters
-    ) {
+        query: string,
+        sessionId: string | null = null,
+        model: string = "model.nlp",
+        parameters?: Record<string, unknown>
+    ): Promise<any> {
         const modelPath = File.getModel(model);
 
         const modelIsValid = await File.verifyModel(model);
@@ -153,7 +154,7 @@ export default class Model {
         }
     }
 
-    static async train() {
+    static async train(): Promise<void> {
         try {
             Text.logMessage("Bot is training");
 
@@ -167,7 +168,7 @@ export default class Model {
         }
     }
 
-    static async save(manager, modelName) {
+    static async save(manager: any, modelName: string): Promise<void> {
         const fileName = File.getModel(modelName);
 
         File.removeModel(modelName);
@@ -183,7 +184,11 @@ export default class Model {
         }
     }
 
-    static async makeResponse(response, sessionId = null, parameters) {
+    static async makeResponse(
+        response: any,
+        sessionId: string | null = null,
+        parameters?: Record<string, unknown>
+    ): Promise<any> {
         const intentData = await File.getIntent(response.intent);
 
         const entities = response.entities.map(entity => {

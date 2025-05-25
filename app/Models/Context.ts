@@ -1,5 +1,18 @@
+export interface IntentData {
+    id: string;
+    name: string;
+    slug: string;
+    responses: unknown[];
+    utterances: string[];
+}
+
+export interface ContextEntry {
+    name: string;
+    lifespanCount: number;
+}
+
 export default class Context {
-    static getName(context) {
+    static getName(context?: ContextEntry) {
         let path = "model.nlp";
         if (context && context.name) {
             const contextName = context.name;
@@ -8,7 +21,7 @@ export default class Context {
         return path;
     }
 
-    static decrease(contexts) {
+    static decrease(contexts: ContextEntry[]) {
         const contextsToDecrease = contexts.filter(
             context => context.lifespanCount > 1
         );
@@ -22,7 +35,7 @@ export default class Context {
         return newContexts;
     }
 
-    static group(contexts) {
+    static group(contexts: ContextEntry[]) {
         if (contexts.length === 0) {
             return [];
         }
@@ -45,7 +58,7 @@ export default class Context {
         return groupedContexts;
     }
 
-    static update(contexts) {
+    static update(contexts: ContextEntry[]) {
         const groupedContexts = Context.group(contexts);
         const newContexts = [];
 
@@ -61,7 +74,7 @@ export default class Context {
         return newContexts;
     }
 
-    static groupIntents(intents) {
+    static groupIntents(intents: IntentData[]) {
         const groupedIntents = {};
         intents.map(intent => {
             const intentId = intent.id;

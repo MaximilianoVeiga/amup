@@ -1,6 +1,12 @@
+export interface EntitySeed {
+    name: string;
+    type: string;
+    data: string[];
+}
+
 export default class Entity {
-    static seed() {
-        const defaultEntities = [];
+    static seed(): EntitySeed[] {
+        const defaultEntities: EntitySeed[] = [];
 
         defaultEntities.push({
             name: "date",

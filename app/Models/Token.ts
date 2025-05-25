@@ -1,11 +1,13 @@
 import short from "short-uuid";
 
 export default class Token {
-    constructor(token) {
+    token: string;
+
+    constructor(token: string) {
         this.token = token;
     }
 
-    static generate() {
+    static generate(): string {
         return short.generate();
     }
 }

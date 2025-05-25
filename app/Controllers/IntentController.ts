@@ -6,11 +6,12 @@ import Intent from "#models/Intent.js";
 import Model from "#models/Model.js";
 import Text from "#models/Text.js";
 import Token from "#models/Token.js";
+import { Request, Response } from "express";
 
 import RedisDAO from "#database/Redis.js";
 
 export default class IntentController {
-    async detect(req, res) {
+    async detect(req: Request, res: Response): Promise<void> {
         const intentText = req.query.text;
         const sessionId = req.query.sessionId || Token.generate();
 
@@ -153,12 +154,12 @@ export default class IntentController {
         });
     }
 
-    async index(req, res) {
+    async index(req: Request, res: Response): Promise<void> {
         const intents = await File.readIntents();
         res.send(intents);
     }
 
-    async create(req, res) {
+    async create(req: Request, res: Response): Promise<void> {
         const reqIntent = req.body;
 
         try {
@@ -199,7 +200,7 @@ export default class IntentController {
         }
     }
 
-    async update(req, res) {
+    async update(req: Request, res: Response): Promise<void> {
         const intentId = req.params.id;
         const reqIntent = req.body;
 
@@ -253,7 +254,7 @@ export default class IntentController {
         }
     }
 
-    async destroy(req, res) {
+    async destroy(req: Request, res: Response): Promise<void> {
         const intentId = req.params.id;
         const intents = await File.readIntents();
 

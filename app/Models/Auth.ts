@@ -1,15 +1,18 @@
 export default class Auth {
-    constructor(auth) {
+    username: string;
+    password: string;
+
+    constructor(auth: { username: string; password: string }) {
         this.username = auth.username;
         this.password = auth.password;
     }
 
-    isValid() {
-        return this.username && this.password;
+    isValid(): boolean {
+        return !!this.username && !!this.password;
     }
 
-    static validateFields(req, fields) {
-        const errors = [];
+    static validateFields(req: any, fields: string[]): Array<{ field: string; message: string }> {
+        const errors: Array<{ field: string; message: string }> = [];
 
         fields.forEach(field => {
             if (!req.body[field]) {
@@ -23,11 +26,11 @@ export default class Auth {
         return errors;
     }
 
-    static getBearerToken(authorization) {
+    static getBearerToken(authorization: string): string {
         return authorization.split(" ")[1];
     }
 
-    toJSON() {
+    toJSON(): { username: string; password: string } {
         return {
             username: this.username,
             password: this.password,

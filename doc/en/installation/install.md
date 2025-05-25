@@ -9,6 +9,7 @@ AMUP is free software, you can install it on your computer.
 * **Docker** [Docker](https://www.docker.com/community-edition)
 * **Git** [Git](https://git-scm.com/)
 * **Node** [Node.js](https://nodejs.org/)
+* **TypeScript** [TypeScript](https://www.typescriptlang.org/)
 * **NPM** [npm](https://www.npmjs.com/)
 
 ### Installing AMUP
