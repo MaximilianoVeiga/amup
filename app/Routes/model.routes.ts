@@ -1,6 +1,6 @@
-import express from "express";
+import express, { Router } from "express";
 
-const router = express.Router();
+const router: Router = express.Router();
 
 import IntentController from "#controllers/IntentController.js";
 import ModelController from "#controllers/ModelController.js";

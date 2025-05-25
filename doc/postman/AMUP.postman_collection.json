@@ -83,7 +83,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\r\n  \"name\": \"Max Intent\",\r\n  \"fallbackIntent\": false,\r\n  \"endInteraction\": false,\r\n  \"utterances\": [\r\n    \"sou o max\"\r\n  ],\r\n  \"inputContexts\": [],\r\n  \"outputContexts\": [],\r\n  \"responses\": [\r\n    {\r\n      \"parameters\": [],\r\n      \"message\": [\r\n        {\r\n          \"type\": \"message\",\r\n          \"plataform\": \"webchat\",\r\n          \"text\": [\r\n            \"Olá, Maximiliano!\"\r\n          ]\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
+                            "raw": "{\r\n  \"name\": \"Max Intent\",\r\n  \"fallbackIntent\": false,\r\n  \"endInteraction\": false,\r\n  \"utterances\": [\r\n    \"sou o max\"\r\n  ],\r\n  \"inputContexts\": [],\r\n  \"outputContexts\": [],\r\n  \"responses\": [\r\n    {\r\n      \"parameters\": [],\r\n      \"message\": [\r\n        {\r\n          \"type\": \"message\",\r\n          \"platform\": \"webchat\",\r\n          \"text\": [\r\n            \"Olá, Maximiliano!\"\r\n          ]\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -116,7 +116,7 @@
                         "header": [],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\r\n  \"name\": \"Max Intent\",\r\n  \"fallbackIntent\": false,\r\n  \"endInteraction\": false,\r\n  \"utterances\": [\r\n    \"sou o max\"\r\n  ],\r\n  \"inputContexts\": [],\r\n  \"outputContexts\": [],\r\n  \"responses\": [\r\n    {\r\n      \"parameters\": [],\r\n      \"message\": [\r\n        {\r\n          \"type\": \"message\",\r\n          \"plataform\": \"webchat\",\r\n          \"text\": [\r\n            \"Olá, Maximiliano!\"\r\n          ]\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
+                            "raw": "{\r\n  \"name\": \"Max Intent\",\r\n  \"fallbackIntent\": false,\r\n  \"endInteraction\": false,\r\n  \"utterances\": [\r\n    \"sou o max\"\r\n  ],\r\n  \"inputContexts\": [],\r\n  \"outputContexts\": [],\r\n  \"responses\": [\r\n    {\r\n      \"parameters\": [],\r\n      \"message\": [\r\n        {\r\n          \"type\": \"message\",\r\n          \"platform\": \"webchat\",\r\n          \"text\": [\r\n            \"Olá, Maximiliano!\"\r\n          ]\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"

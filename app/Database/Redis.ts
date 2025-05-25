@@ -1,6 +1,8 @@
 import redis from "redis";
 
 export default class RedisDAO {
+    redisConfig: { host: string | undefined; port: string | undefined };
+
     constructor() {
         this.redisConfig = {
             host: process.env.REDIS_IP,
@@ -8,7 +10,7 @@ export default class RedisDAO {
         };
     }
 
-    async connect() {
+    async connect(): Promise<any> {
         try {
             const client = redis.createClient(this.redisConfig);
 

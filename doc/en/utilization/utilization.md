@@ -27,7 +27,7 @@ curl --location --request POST 'localhost:3000/api/intent' \
       "message": [
         {
           "type": "message",
-          "plataform": "webchat",
+          "platform": "webchat",
           "text": [
             "Olá, Maximiliano!"
           ]

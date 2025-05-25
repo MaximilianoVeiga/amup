@@ -8,18 +8,18 @@ const __dirname = path.dirname(__filename);
 
 dotenv.config({ path: path.join(__dirname, "..", ".env") });
 
-import express from "express";
+import express, { Request, Response } from "express";
 
 import bodyParser from "body-parser";
 import cors from "cors";
 
-const app = express();
+const app: express.Express = express();
 
 import Environment from "#config/Environment.js";
 import Model from "#models/Model.js";
 import Text from "#models/Text.js";
 
-const trainOnStartup = Environment.getTrainOnStartup();
+const trainOnStartup: boolean | undefined = Environment.getTrainOnStartup();
 
 if (trainOnStartup) {
     Model.train();
@@ -28,8 +28,8 @@ if (trainOnStartup) {
 app.use(bodyParser.json());
 app.use(cors());
 
-const url = process.env.URL || "localhost";
-const port = process.env.PORT || 3000;
+const url: string = process.env.URL || "localhost";
+const port: string | number = process.env.PORT || 3000;
 
 import authRouter from "#routes/auth.routes.js";
 import healthRouter from "#routes/health.routes.js";
@@ -44,7 +44,7 @@ app.use("/api", healthRouter);
 app.use("/api", intentRouter);
 app.use("/", modelRouter);
 
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
     res.send({
         name: "[AMUP] - Artifical Machine Understanding Platform - API",
         version: packageVersion,

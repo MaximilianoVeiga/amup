@@ -1,7 +1,9 @@
 import Model from "../Models/Model.js";
+import Text from "#models/Text.js";
+import { Request, Response } from "express";
 
 export default class ModelController {
-    async train(req, res) {
+    async train(req: Request, res: Response): Promise<void> {
         try {
             await Model.train();
             res.status(200).send({

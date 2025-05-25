@@ -9,6 +9,7 @@ O AMUP é um software livre de Processamento de Linguagem Natural, você pode in
 * **Docker** [Docker](https://www.docker.com/community-edition)
 * **Git** [Git](https://git-scm.com/)
 * **Node** [Node.js](https://nodejs.org/)
+* **TypeScript** [TypeScript](https://www.typescriptlang.org/)
 * **NPM** [npm](https://www.npmjs.com/)
 
 ### Instalando o AMUP

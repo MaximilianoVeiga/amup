@@ -33,7 +33,7 @@ const intentValidator = Joi.object({
                     .items(
                         Joi.object({
                             type: Joi.string().required(),
-                            plataform: Joi.string().required(),
+                            platform: Joi.string().required(),
                             text: Joi.array().items(Joi.string()).required(),
                         })
                     )

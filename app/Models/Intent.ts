@@ -1,7 +1,30 @@
 import short from "short-uuid";
 
+export interface IntentProps {
+    id?: string;
+    name: string;
+    slug: string;
+    fallbackIntent: boolean;
+    endInteraction: boolean;
+    utterances: string[];
+    inputContexts: unknown[];
+    outputContexts: unknown[];
+    responses: unknown[];
+}
+
 export default class Intent {
-    constructor(intent) {
+    id: string;
+    name: string;
+    slug: string;
+    fallbackIntent: boolean;
+    endInteraction: boolean;
+    priority: number;
+    utterances: string[];
+    inputContexts: unknown[];
+    outputContexts: unknown[];
+    responses: unknown[];
+
+    constructor(intent: IntentProps) {
         this.id = intent.id ? intent.id : short.generate();
         this.name = intent.name;
         this.slug = intent.slug;
@@ -14,18 +37,18 @@ export default class Intent {
         this.responses = intent.responses;
     }
 
-    isValid() {
-        return this.name &&
+    isValid(): boolean {
+        return !!(
+            this.name &&
             this.slug &&
             this.utterances &&
             this.utterances.length > 0 &&
             this.responses &&
             this.responses.length > 0
-            ? true
-            : false;
+        );
     }
 
-    toJSON() {
+    toJSON(): IntentProps {
         return {
             id: this.id,
             name: this.name,
